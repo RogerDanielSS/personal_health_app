@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/presentation/pages/home_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import '../../domain/usecases/authentication.dart';
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  final Authentication authentication;
+
+  LoginPage({
+    super.key,
+    required this.authentication,
+  });
+
+  Future<void> _login(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
@@ -22,13 +25,32 @@ class _LoginPageState extends State<LoginPage> {
       print('Email: $email');
       print('Password: $password');
 
-      // Navigate to the HomePage
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      try {
+        var response = await authentication.auth(AuthenticationParams(email: email, password: password));
+        print('response: $response');
+
+        // Navigate to the HomePage only if login is successful
+        if (response != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          // Show an error message if login fails
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed. Please check your credentials.')),
+          );
+        }
+      } catch (e) {
+        // Handle any errors that occur during the login process
+        print('Error: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('An error occurred. Please try again later.')),
+        );
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: _login,
+                      onPressed: () => _login(context),
                       child: Text('Entrar'),
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'main/usecases/authentication_factory.dart';
 import 'presentation/pages/login.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: LoginPage(authentication: makeRemoteAuthentication(),),
     );
   }
 }
