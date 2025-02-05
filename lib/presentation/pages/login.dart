@@ -22,26 +22,15 @@ class LoginPage extends StatelessWidget {
       String password = _passwordController.text.trim();
 
       // Perform login logic here (e.g., API call)
-      print('Email: $email');
-      print('Password: $password');
 
       try {
-        var response = await authentication.auth(AuthenticationParams(email: email, password: password));
-        print('response: $response');
-
+        final response = await authentication.auth(AuthenticationParams(email: email, password: password));
         // Navigate to the HomePage only if login is successful
-        if (response != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        } else {
-          // Show an error message if login fails
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login failed. Please check your credentials.')),
-          );
-        }
-      } catch (e) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+            } catch (e) {
         // Handle any errors that occur during the login process
         print('Error: $e');
         ScaffoldMessenger.of(context).showSnackBar(

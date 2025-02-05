@@ -75,6 +75,7 @@ class HttpAdapter implements HttpClient {
         fileResponse = await futureFileResponse.timeout(const Duration(seconds: 180));
       }
     } catch (error) {
+      print(error);
       throw HttpError.serverError;
     }
 
@@ -159,6 +160,7 @@ class HttpAdapter implements HttpClient {
       case 404:
         throw HttpError.notFound;
       default:
+        print(response.statusCode);
         throw HttpError.serverError;
     }
   }
