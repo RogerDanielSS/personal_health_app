@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
       // Perform login logic here (e.g., API call)
 
       try {
-        final response = await authentication.auth(AuthenticationParams(email: email, password: password));
+        await authentication.auth(AuthenticationParams(email: email, password: password));
         // Navigate to the HomePage only if login is successful
         Navigator.push(
           context,
@@ -32,7 +32,6 @@ class LoginPage extends StatelessWidget {
         );
             } catch (e) {
         // Handle any errors that occur during the login process
-        print('Error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('An error occurred. Please try again later.')),
         );

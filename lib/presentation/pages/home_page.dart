@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/domain/entities/entities.dart';
+import 'package:personal_health_app/presentation/components/build_bottom_bar.dart';
+import 'package:personal_health_app/presentation/components/events_list.dart';
+
+import '../components/card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,12 +47,13 @@ class _HomePageState extends State<HomePage> {
           // Column is also a layout widget. It takes a list of children and
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            EventsList(
+              events: [
+                EventEntity(id: 1, title: 'Teste', column1: 'Arroba'),
+                EventEntity(id: 2, title: 'Teste2', column1: 'Arroba2'),
+                EventEntity(id: 3, title: 'Teste3', column1: 'Arroba3'),
+                EventEntity(id: 4, title: 'Teste4', column1: 'Arroba4')
+              ],
             ),
           ],
         ),
@@ -56,6 +62,11 @@ class _HomePageState extends State<HomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: buildBottomBar(
+        currentIndex: 1,
+        update: (index) => print(index),
+        context: context,
       ),
     );
   }
