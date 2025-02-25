@@ -12,7 +12,7 @@ class ItemWidget extends StatelessWidget {
   final Curve curve;
 
   const ItemWidget({
-    Key? key,
+    super.key,
     required this.item,
     required this.isSelected,
     required this.backgroundColor,
@@ -20,7 +20,7 @@ class ItemWidget extends StatelessWidget {
     required this.itemCornerRadius,
     required this.iconSize,
     this.curve = Curves.linear,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

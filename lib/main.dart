@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'main/usecases/authentication_factory.dart';
+import 'main/factories/usecases/authentication_factory.dart';
 import 'presentation/pages/login.dart';
 
 void main() {

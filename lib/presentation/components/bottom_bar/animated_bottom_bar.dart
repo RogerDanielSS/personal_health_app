@@ -5,7 +5,7 @@ import 'item_widget.dart';
 
 class AnimatedBottomBar extends StatelessWidget {
   const AnimatedBottomBar({
-    Key? key,
+    super.key,
     this.selectedIndex = 0,
     this.showElevation = true,
     this.iconSize = 24,
@@ -17,8 +17,7 @@ class AnimatedBottomBar extends StatelessWidget {
     required this.items,
     required this.onItemSelected,
     this.curve = Curves.linear,
-  })  : assert(items.length >= 2 && items.length <= 5),
-        super(key: key);
+  })  : assert(items.length >= 2 && items.length <= 5);
 
   final int selectedIndex;
   final double iconSize;
