@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/presentation/components/build_bottom_bar.dart';
-import 'package:personal_health_app/presentation/components/events_list.dart';
 import 'package:personal_health_app/presentation/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
 
