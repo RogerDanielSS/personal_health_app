@@ -1,32 +1,33 @@
-import '../../domain/entities/entities.dart';
+import 'package:personal_health_app/domain/entities/item.dart';
+
 import '../protocols/http/http_error.dart';
 
-class RemoteEventModel {
+class RemoteItemModel {
   final int id;
   final String title;
-  final String column1;
+  final Map<String, String> fields;
 
-  RemoteEventModel({
+  RemoteItemModel({
     required this.id,
     required this.title,
-    required this.column1,
+    required this.fields,
   });
 
-  factory RemoteEventModel.fromJson(Map json) {
+  factory RemoteItemModel.fromJson(Map json) {
     if (!json.keys.toSet().containsAll(['id', 'title', 'column1'])) {
       throw HttpError.invalidData;
     }
 
-    return RemoteEventModel(
+    return RemoteItemModel(
       id: json['id'],
       title: json['title'],
-      column1: json['column1'],
+      fields: json['fields'],
     );
   }
 
-  EventEntity toEntity() => EventEntity(
+  ItemEntity toEntity() => ItemEntity(
         id: id,
         title: title,
-        column1: column1,
+        fields: fields,
       );
 }

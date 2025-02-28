@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_health_app/presentation/pages/home_page.dart';
 
 import '../../domain/usecases/authentication.dart';
+import '../../main/factories/pages/home_page/home_page_factory.dart';
 
 
 class LoginPage extends StatelessWidget {
@@ -28,7 +29,7 @@ class LoginPage extends StatelessWidget {
         // Navigate to the HomePage only if login is successful
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => makeHomePage()),
         );
             } catch (e) {
         // Handle any errors that occur during the login process

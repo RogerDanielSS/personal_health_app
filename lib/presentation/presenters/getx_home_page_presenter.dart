@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:personal_health_app/domain/entities/entities.dart';
+import 'package:personal_health_app/domain/entities/item.dart';
 import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
 
 import '../../../domain/usecases/usecases.dart';
@@ -11,36 +11,38 @@ import '../mixins/mixins.dart';
 class GetxHomePagePresenter extends GetxController
     with SessionManager, NavigationManager, UIErrorManager, LoadingManager
     implements HomePagePresenter {
-  final LoadEvents loadEvents;
+  final LoadItems loadItems;
   final DeleteCurrentAccount deleteCurrentAccount;
   final LoadCurrentAccount loadCurrentAccount;
 
-  final _events = Rx<List<EventEntity>>([]);
-  final _eventsError = Rx<String>('');
-  final _selectedEvent = Rx<EventEntity?>(null);
+  final _items = Rx<List<ItemEntity>>([]);
+  final _itemsError = Rx<String>('');
+  final _selectedItem = Rx<ItemEntity?>(null);
 
   GetxHomePagePresenter({
-    required this.loadEvents,
+    required this.loadItems,
     required this.deleteCurrentAccount,
     required this.loadCurrentAccount,
   });
 
   @override
-  Stream<EventEntity?> get selectedEventStream => _selectedEvent.stream;
+  Stream<ItemEntity?> get selectedItemStream => _selectedItem.stream;
   @override
-  Stream<List<EventEntity>> get eventsStream => _events.stream;
+  Stream<List<ItemEntity>> get itemsStream => _items.stream;
 
   @override
-  Future<void> loadEventsData() async {
+  Future<void> loadItemsData() async {
     try {
       mainError = null;
-      _eventsError.value = '';
+      _itemsError.value = '';
 
-      final events = await loadEvents.load();
-      _events.value = events
-          .map((event) => EventEntity(
-              id: event.id, title: event.title, column1: event.column1))
+      final items = await loadItems.load();
+      _items.value = items
+          .map((item) => ItemEntity(
+              id: item.id, title: item.title, fields: item.fields))
           .toList();
+
+      print(_items);
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {
         isSessionExpired = true;
@@ -63,7 +65,7 @@ class GetxHomePagePresenter extends GetxController
   }
 
   void setError() {
-    _eventsError.value = UIError.unexpected.description;
-    _events.refresh();
+    _itemsError.value = UIError.unexpected.description;
+    _items.refresh();
   }
 }
