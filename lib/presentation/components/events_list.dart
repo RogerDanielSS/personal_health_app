@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/domain/entities/entities.dart';
+import 'package:personal_health_app/domain/entities/item.dart';
 import 'package:personal_health_app/presentation/components/card.dart';
 
-class EventsList extends StatelessWidget {
-  final List<EventEntity>? events;
+class ItemsList extends StatelessWidget {
+  final List<ItemEntity>? items;
 
-  const EventsList({super.key, this.events});
+  const ItemsList({super.key, this.items});
 
-  List<Widget> buildEventsCards(int count) {
+  List<Widget> buildItemsCards(int count) {
     return List.generate(
         count,
-        (index) => EventCard(
-              event: events![index],
+        (index) => ItemCard(
+              item: items![index],
             ));
   }
 
@@ -21,7 +21,7 @@ class EventsList extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: Column(
         key: key,
-        children: buildEventsCards((events ?? []).length),
+        children: buildItemsCards((items ?? []).length),
       ),
     );
   }

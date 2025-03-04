@@ -14,9 +14,17 @@ class RemoteItemModel {
   });
 
   factory RemoteItemModel.fromJson(Map json) {
-    if (!json.keys.toSet().containsAll(['id', 'title', 'column1'])) {
+    if (!json.keys.toSet().containsAll(['id', 'title', 'fields'])) {
       throw HttpError.invalidData;
     }
+
+    final test = RemoteItemModel(
+      id: json['id'],
+      title: json['title'],
+      fields: json['fields'],
+    );
+
+    print(test);
 
     return RemoteItemModel(
       id: json['id'],

@@ -19,11 +19,14 @@ class RemoteLoadItems implements LoadItems {
     try {
       final httpResponse = await httpClient.request(url: url, method: 'get');
       final responseBody = httpResponse['body'];
+
+      print(responseBody);
+
       return responseBody
-          .map<ItemEntity>(
-              (json) => RemoteItemModel.fromJson(json).toEntity())
+          .map<ItemEntity>((json) => RemoteItemModel.fromJson(json).toEntity())
           .toList();
     } on HttpError catch (error) {
+      print(error);
       throw error == HttpError.unauthorized
           ? DomainError.accessDenied
           : DomainError.unexpected;
