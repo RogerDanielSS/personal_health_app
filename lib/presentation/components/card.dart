@@ -9,23 +9,23 @@ class ItemCard extends StatelessWidget {
     this.item,
   });
 
-  List<Widget> buildCardFields() {
-    var fields = item?.fields;
-    if (fields == null) return [];
+  // List<Widget> buildCardFields() {
+  //   var fields = item?.fields;
+  //   if (fields == null) return [];
 
-    return fields.entries.map((entry) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            entry.key,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(entry.value.toString()), // Ensure value is converted to String
-        ],
-      );
-    }).toList();
-  }
+  //   return fields.entries.map((entry) {
+  //     return Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           entry.key,
+  //           style: TextStyle(fontWeight: FontWeight.bold),
+  //         ),
+  //         Text(entry.value.toString()), // Ensure value is converted to String
+  //       ],
+  //     );
+  //   }).toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class ItemCard extends StatelessWidget {
                     color: Colors.black, fontWeight: FontWeight.w500),
               ),
               SizedBox(height: 8),
-              ...buildCardFields(), // Insert list of Rows here
+              // ...buildCardFields(), // Insert list of Rows here
             ],
           ),
         ),
