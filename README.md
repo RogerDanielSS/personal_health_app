@@ -24,3 +24,8 @@ Esses casos de uso são implementados em data e dependem de algumas infraestrutu
 Deste modo, dispositivos de infraestruturas são definidos em data e implementados em infra.
 
 A implementação de tudo é sempre passada na main
+
+
+instale o flutter
+
+rode flutter pub get
