@@ -11,7 +11,7 @@ import '../mixins/mixins.dart';
 class GetxHomePagePresenter extends GetxController
     with SessionManager, NavigationManager, UIErrorManager, LoadingManager
     implements HomePagePresenter {
-  final LoadItems loadItems;
+  final LoadUserItems loadItems;
   final DeleteCurrentAccount deleteCurrentAccount;
   final LoadCurrentAccount loadCurrentAccount;
 
@@ -36,7 +36,9 @@ class GetxHomePagePresenter extends GetxController
       mainError = null;
       _itemsError.value = '';
 
-      final items = await loadItems.load();
+      final account = await loadCurrentAccount.load();
+
+      final items = await loadItems.load(account.id);
       _items.value = items
           .map((item) =>
               ItemEntity(id: item.id, title: item.title, fields: item.fields))

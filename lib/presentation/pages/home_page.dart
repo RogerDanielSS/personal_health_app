@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/domain/entities/item.dart';
 import 'package:personal_health_app/domain/entities/user.dart';
 import 'package:personal_health_app/domain/usecases/load_current_account.dart';
-import 'package:personal_health_app/presentation/components/build_bottom_bar.dart';
+import 'package:personal_health_app/domain/usecases/load_user_items.dart';
 import 'package:personal_health_app/presentation/components/events_list.dart';
 import 'package:personal_health_app/presentation/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
@@ -9,6 +10,7 @@ import 'package:personal_health_app/presentation/pages/home_page_presenter.dart'
 class HomePage extends StatefulWidget {
   final HomePagePresenter presenter;
   final LoadCurrentAccount loadCurrentAccount;
+  // final LoadUserItems loadUserItems;
 
   const HomePage(
       {super.key, required this.presenter, required this.loadCurrentAccount});
@@ -19,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   UserEntity? _currentAccount;
+  List<ItemEntity>? _items;
   bool _isLoading = true; // Add loading state
   String? _errorMessage; // Add error state
 
@@ -41,20 +44,19 @@ class _HomePageState extends State<HomePage> {
         _isLoading = true;
         _errorMessage = null;
       });
-      
+
       final account = await widget.loadCurrentAccount.load();
-      
+
       setState(() {
         _currentAccount = account;
         _isLoading = false;
       });
-      
     } catch (e) {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to load account';
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load account: ${e.toString()}')),
       );
@@ -96,11 +98,6 @@ class _HomePageState extends State<HomePage> {
         onPressed: handleAddEvent,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: buildBottomBar(
-        currentIndex: 1,
-        update: (index) => print(index),
-        context: context,
       ),
     );
   }
