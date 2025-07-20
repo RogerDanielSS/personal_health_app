@@ -19,18 +19,42 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   UserEntity? _currentAccount;
+  bool _isLoading = true; // Add loading state
+  String? _errorMessage; // Add error state
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializePage();
+    });
+  }
+
+  Future<void> _initializePage() async {
     widget.presenter.loadItemsData();
-    _loadCurrentAccount();
+    await _loadCurrentAccount();
   }
 
   Future<void> _loadCurrentAccount() async {
     try {
-      _currentAccount = await widget.loadCurrentAccount.load();
-      print(_currentAccount);
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+      
+      final account = await widget.loadCurrentAccount.load();
+      
+      setState(() {
+        _currentAccount = account;
+        _isLoading = false;
+      });
+      
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Failed to load account';
+      });
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load account: ${e.toString()}')),
       );
