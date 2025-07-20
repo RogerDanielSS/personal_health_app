@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/domain/usecases/usecases.dart';
 
-import '../../domain/usecases/authentication.dart';
 import '../../main/factories/pages/home_page/home_page_factory.dart';
-
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -10,10 +9,12 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
   final Authentication authentication;
+  final SaveCurrentAccount saveCurrentAccount;
 
   LoginPage({
     super.key,
     required this.authentication,
+    required this.saveCurrentAccount,
   });
 
   Future<void> _login(BuildContext context) async {
@@ -24,13 +25,17 @@ class LoginPage extends StatelessWidget {
       // Perform login logic here (e.g., API call)
 
       try {
-        await authentication.auth(AuthenticationParams(email: email, password: password));
+        final account = await authentication
+            .auth(AuthenticationParams(email: email, password: password));
+
+        await saveCurrentAccount.save(account);
+
         // Navigate to the HomePage only if login is successful
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => makeHomePage()),
         );
-            } catch (e) {
+      } catch (e) {
         // Handle any errors that occur during the login process
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('An error occurred. Please try again later.')),
@@ -38,7 +43,6 @@ class LoginPage extends StatelessWidget {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

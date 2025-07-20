@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/main/factories/usecases/usecases.dart';
 
-import 'main/factories/usecases/authentication_factory.dart';
 import 'presentation/pages/login.dart';
 
 void main() {
@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(authentication: makeRemoteAuthentication(),),
+      home: LoginPage(
+        authentication: makeRemoteAuthentication(),
+        saveCurrentAccount: makeLocalSaveCurrentAccount(),
+      ),
     );
   }
 }
