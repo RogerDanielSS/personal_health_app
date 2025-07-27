@@ -40,6 +40,8 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/logo.png
+    - assets/logo_128.png
+    - assets/logo_64.png
+    - assets/background_1920x1080.png
 
   uses-material-design: true
