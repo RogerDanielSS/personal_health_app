@@ -63,8 +63,40 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void handleAddEvent() {
-    print(widget.presenter.itemsStream);
+  final List<PopupMenuItem> _menuItems = [
+    const PopupMenuItem(
+      value: "Hemograma",
+      child: Text("Hemograma"),
+    ),
+    const PopupMenuItem(
+      value: "Ressonância magnética",
+      child: Text("Ressonância magnética"),
+    ),
+    const PopupMenuItem(
+      value: "Ultrassom",
+      child: Text("Ultrassom"),
+    ),
+    // Add more items...
+  ];
+
+  void _showScrollableMenu(BuildContext context) {
+    showMenu(
+      context: context,
+      position: const RelativeRect.fromLTRB(100, 100, 0, 0), // Adjust position
+      
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
+      ),
+      items: [
+        for (final item in _menuItems)
+          PopupMenuItem<String>(
+            value: item.value,
+            child: ListTile(
+              title: Text(item.value),
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -95,7 +127,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: handleAddEvent,
+        onPressed: () => _showScrollableMenu(context),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
