@@ -80,22 +80,24 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _showScrollableMenu(BuildContext context) {
+    // Get the RenderBox of the FloatingActionButton
+    final RenderBox fabRenderBox = context.findRenderObject() as RenderBox;
+    final fabSize = fabRenderBox.size;
+    final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
+
     showMenu(
       context: context,
-      position: const RelativeRect.fromLTRB(100, 100, 0, 0), // Adjust position
-      
+      position: RelativeRect.fromLTRB(
+        fabOffset.dx, // Left: same as FAB's left
+        fabOffset.dy - 10, // Top: above FAB (with 10px padding)
+        fabOffset.dx + fabSize.width, // Right: same as FAB's right
+        fabOffset.dy + fabSize.height, // Bottom: below FAB (unused here)
+      ),
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.6,
+        maxWidth: 250, // Optional: constrain width
       ),
-      items: [
-        for (final item in _menuItems)
-          PopupMenuItem<String>(
-            value: item.value,
-            child: ListTile(
-              title: Text(item.value),
-            ),
-          ),
-      ],
+      items: _menuItems,
     );
   }
 
