@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/usecases/usecases.dart';
+import 'package:personal_health_app/presentation/components/styled_text_form_field.dart';
 
 import '../../main/factories/pages/home_page/home_page_factory.dart';
 
@@ -51,8 +52,8 @@ class LoginPage extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey.shade50,
             image: DecorationImage(
-              image: AssetImage(
-                  'assets/background_1920x1080.png'), // Local image
+              image:
+                  AssetImage('assets/background_1920x1080.png'), // Local image
               fit: BoxFit.cover,
             ),
           ),
@@ -74,12 +75,9 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextFormField(
+                        StyledTextFormField(
                           controller: _emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            border: OutlineInputBorder(),
-                          ),
+                          label: 'Email',
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -93,13 +91,11 @@ class LoginPage extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: 16),
-                        TextFormField(
+                        StyledTextFormField(
                           controller: _passwordController,
-                          decoration: InputDecoration(
-                            labelText: 'Senha',
-                            border: OutlineInputBorder(),
-                          ),
-                          obscureText: true,
+                          label: 'Senha',
+                          enableObscureText: true,
+                          keyboardType: TextInputType.none,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
@@ -112,6 +108,18 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(height: 24),
                         ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all<Color>(Colors.white),
+                            foregroundColor:
+                                WidgetStateProperty.all<Color>(Colors.black),
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
                           onPressed: () => _login(context),
                           child: Text('Entrar'),
                         ),
