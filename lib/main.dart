@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/main/factories/usecases/usecases.dart';
 
+import 'main/factories/pages/home_page/home_page_factory.dart';
+import 'presentation/components/main_layout.dart';
+import 'presentation/pages/home_page.dart';
 import 'presentation/pages/login.dart';
 
 void main() {
@@ -14,14 +17,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login Page',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
+      title: 'My App',
+      theme: ThemeData(primarySwatch: Colors.yellow),
+      // LoginPage is the initial route
       home: LoginPage(
         authentication: makeRemoteAuthentication(),
         saveCurrentAccount: makeLocalSaveCurrentAccount(),
       ),
+      // Named routes for post-login screens
+      routes: {
+        '/home': (context) => MainLayout(title: 'Home', child: makeHomePage()),
+        '/profile': (context) =>
+            MainLayout(title: 'Profile', child: makeHomePage()),
+      },
     );
   }
 }

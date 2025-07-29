@@ -36,10 +36,8 @@ class LoginPage extends StatelessWidget {
         //   context,
         //   MaterialPageRoute(builder: (context) => makeHomePage()),
         // );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => makeHomePage()),
-        );
+// Inside LoginPage's _login method:
+        Navigator.pushReplacementNamed(context, '/home');
       } catch (e) {
         // Handle any errors that occur during the login process
         ScaffoldMessenger.of(context).showSnackBar(
