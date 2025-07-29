@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey _fabKey = GlobalKey();
   UserEntity? _currentAccount;
   List<ItemEntity>? _items;
   bool _isLoading = true; // Add loading state
@@ -76,29 +77,57 @@ class _HomePageState extends State<HomePage> {
       value: "Ultrassom",
       child: Text("Ultrassom"),
     ),
+    const PopupMenuItem(
+      value: "Hemograma",
+      child: Text("Hemograma"),
+    ),
+    const PopupMenuItem(
+      value: "Ressonância magnética",
+      child: Text("Ressonância magnética"),
+    ),
+    const PopupMenuItem(
+      value: "Ultrassom",
+      child: Text("Ultrassom"),
+    ),
+    const PopupMenuItem(
+      value: "Hemograma",
+      child: Text("Hemograma"),
+    ),
+    const PopupMenuItem(
+      value: "Ressonância magnética",
+      child: Text("Ressonância magnética"),
+    ),
+    const PopupMenuItem(
+      value: "Ultrassom",
+      child: Text("Ultrassom"),
+    ),
     // Add more items...
   ];
 
   void _showScrollableMenu(BuildContext context) {
-    // Get the RenderBox of the FloatingActionButton
-    final RenderBox fabRenderBox = context.findRenderObject() as RenderBox;
-    final fabSize = fabRenderBox.size;
-    final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final renderObject = _fabKey.currentContext?.findRenderObject();
+      if (renderObject == null || !(renderObject is RenderBox)) return;
 
-    showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        fabOffset.dx, // Left: same as FAB's left
-        fabOffset.dy - 10, // Top: above FAB (with 10px padding)
-        fabOffset.dx + fabSize.width, // Right: same as FAB's right
-        fabOffset.dy + fabSize.height, // Bottom: below FAB (unused here)
-      ),
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.6,
-        maxWidth: 250, // Optional: constrain width
-      ),
-      items: _menuItems,
-    );
+      final fabRenderBox = renderObject as RenderBox;
+      final fabSize = fabRenderBox.size;
+      final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
+
+      showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(
+          fabOffset.dx,
+          fabOffset.dy - MediaQuery.of(context).size.height * 0.3, // Adjust vertical position as needed
+          fabOffset.dx + fabSize.width,
+          fabOffset.dy + fabSize.height,
+        ),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.3,
+          maxWidth: 250,
+        ),
+        items: _menuItems,
+      );
+    });
   }
 
   @override
@@ -129,6 +158,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        key: _fabKey,
         onPressed: () => _showScrollableMenu(context),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
