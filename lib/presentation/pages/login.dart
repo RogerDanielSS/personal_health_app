@@ -32,7 +32,11 @@ class LoginPage extends StatelessWidget {
         await saveCurrentAccount.save(account);
 
         // Navigate to the HomePage only if login is successful
-        Navigator.push(
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => makeHomePage()),
+        // );
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => makeHomePage()),
         );
