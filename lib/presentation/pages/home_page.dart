@@ -117,7 +117,9 @@ class _HomePageState extends State<HomePage> {
         context: context,
         position: RelativeRect.fromLTRB(
           fabOffset.dx,
-          fabOffset.dy - MediaQuery.of(context).size.height * 0.3, // Adjust vertical position as needed
+          fabOffset.dy -
+              MediaQuery.of(context).size.height *
+                  0.3, // Adjust vertical position as needed
           fabOffset.dx + fabSize.width,
           fabOffset.dy + fabSize.height,
         ),
@@ -133,10 +135,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(_currentAccount?.name ?? ''),
-      ),
       body: StreamBuilder(
         stream: widget.presenter.itemsStream,
         builder: (context, snapshot) {

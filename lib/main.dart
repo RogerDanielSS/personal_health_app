@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       ),
       // Named routes for post-login screens
       routes: {
-        '/home': (context) => MainLayout(title: 'Home', child: makeHomePage()),
+        '/home': (context) => MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
         '/profile': (context) =>
-            MainLayout(title: 'Profile', child: makeHomePage()),
+            MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
       },
     );
   }
