@@ -139,16 +139,14 @@ class _HomePageState extends State<HomePage> {
         stream: widget.presenter.itemsStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Center(
-              child: Column(
-                // Column is also a layout widget. It takes a list of children and
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ItemsList(
-                    items: snapshot.data!,
-                  ),
-                ],
-              ),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: <Widget>[
+                ItemsList(
+                  items: snapshot.data!,
+                ),
+              ],
             );
           }
 
