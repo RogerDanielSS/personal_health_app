@@ -1,19 +1,19 @@
-import 'package:personal_health_app/domain/entities/item.dart';
+import 'package:personal_health_app/domain/entities/entities.dart';
 
 import '../../../domain/helpers/domain_error.dart';
 import '../../../domain/usecases/usecases.dart';
 
-import '../../models/remote_item_model.dart';
+import '../../models/remote_category_model.dart';
 import '../../protocols/http/http.dart';
 
-class RemoteLoadUserItems implements LoadUserItems {
+class RemoteLoadUserCategories implements LoadUserCategories {
   final HttpClient httpClient;
   final String url;
 
-  RemoteLoadUserItems({required this.httpClient, required this.url});
+  RemoteLoadUserCategories({required this.httpClient, required this.url});
 
   @override
-  Future<List<ItemEntity>> load(int userId) async {
+  Future<List<CategoryEntity>> load(int userId) async {
     final fullUrl = url.replaceFirst(RegExp(r':user_id'), '$userId');
 
     try {
@@ -21,7 +21,7 @@ class RemoteLoadUserItems implements LoadUserItems {
       final responseBody = httpResponse['body'];
 
       return responseBody
-          .map<ItemEntity>((json) => RemoteItemModel.fromJson(json).toEntity())
+          .map<CategoryEntity>((json) => RemoteCategoryModel.fromJson(json).toEntity())
           .toList();
     } on HttpError catch (error) {
       throw error == HttpError.unauthorized
