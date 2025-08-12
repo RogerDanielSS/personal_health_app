@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/domain/entities/item.dart';
 import 'package:personal_health_app/domain/entities/user.dart';
 import 'package:personal_health_app/domain/usecases/load_current_account.dart';
@@ -65,73 +66,53 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  final List<PopupMenuItem> _menuItems = [
-    const PopupMenuItem(
-      value: "Hemograma",
-      child: Text("Hemograma"),
-    ),
-    const PopupMenuItem(
-      value: "Ressonância magnética",
-      child: Text("Ressonância magnética"),
-    ),
-    const PopupMenuItem(
-      value: "Ultrassom",
-      child: Text("Ultrassom"),
-    ),
-    const PopupMenuItem(
-      value: "Hemograma",
-      child: Text("Hemograma"),
-    ),
-    const PopupMenuItem(
-      value: "Ressonância magnética",
-      child: Text("Ressonância magnética"),
-    ),
-    const PopupMenuItem(
-      value: "Ultrassom",
-      child: Text("Ultrassom"),
-    ),
-    const PopupMenuItem(
-      value: "Hemograma",
-      child: Text("Hemograma"),
-    ),
-    const PopupMenuItem(
-      value: "Ressonância magnética",
-      child: Text("Ressonância magnética"),
-    ),
-    const PopupMenuItem(
-      value: "Ultrassom",
-      child: Text("Ultrassom"),
-    ),
-    // Add more items...
-  ];
-
-  void _showScrollableMenu(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final renderObject = _fabKey.currentContext?.findRenderObject();
-      if (renderObject == null || !(renderObject is RenderBox)) return;
-
-      final fabRenderBox = renderObject as RenderBox;
-      final fabSize = fabRenderBox.size;
-      final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
-
-      showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(
-          fabOffset.dx,
-          fabOffset.dy -
-              MediaQuery.of(context).size.height *
-                  0.3, // Adjust vertical position as needed
-          fabOffset.dx + fabSize.width,
-          fabOffset.dy + fabSize.height,
-        ),
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.3,
-          maxWidth: 250,
-        ),
-        items: _menuItems,
-      );
-    });
+  List<PopupMenuItem> getMenuItems(List<CategoryEntity> categories) {
+    return categories.map((category) => PopupMenuItem(value: category.id, child: Text(category.name),)).toList();
   }
+
+void _showScrollableMenu(BuildContext context) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final renderObject = _fabKey.currentContext?.findRenderObject();
+    if (renderObject == null || !(renderObject is RenderBox)) return;
+
+    final fabRenderBox = renderObject as RenderBox;
+    final fabSize = fabRenderBox.size;
+    final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        fabOffset.dx,
+        fabOffset.dy - MediaQuery.of(context).size.height * 0.3,
+        fabOffset.dx + fabSize.width,
+        fabOffset.dy + fabSize.height,
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.3,
+        maxWidth: 250,
+      ),
+      items: [
+        // Show loading while waiting for data
+        PopupMenuItem(
+          child: StreamBuilder<List<CategoryEntity>>(
+            stream: widget.presenter.categoriesStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Text('No categories available');
+              }
+              return Column(
+                children: getMenuItems(snapshot.data!),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  });
+}
 
   @override
   Widget build(BuildContext context) {
