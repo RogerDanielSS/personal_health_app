@@ -1,6 +1,8 @@
+import 'package:personal_health_app/data/usecases/load_categories/remote_load_user_categories.dart';
+
 import '../../../../domain/usecases/usecases.dart';
-import '../../../data/usecases/load_items/remote_load_user_items.dart';
 import '../factories.dart';
 
-LoadUserItems makeRemoteLoadItems() => RemoteLoadUserItems(
-    httpClient: makeAuthorizeHttpClientDecorator(), url: makeApiUrl('users/:user_id/categories'));
+LoadUserCategories makeRemoteLoadCategories() => RemoteLoadUserCategories(
+    httpClient: makeAuthorizeHttpClientDecorator(),
+    url: makeApiUrl('users/:user_id/categories'));

@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initializePage() async {
     widget.presenter.loadItemsData();
+    widget.presenter.loadCategoriesData();
     await _loadCurrentAccount();
   }
 

@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/domain/entities/item.dart';
+import 'package:personal_health_app/domain/entities/entities.dart';
 
 abstract class HomePagePresenter implements Listenable {
   Stream<List<ItemEntity>> get itemsStream;
   Stream<ItemEntity?> get selectedItemStream;
-  // List<ItemEntity> get dayItems;
+  Stream<List<CategoryEntity>> get categoriesStream;
   Stream<String?> get navigateToStream;
   Stream<bool> get isSessionExpiredStream;
 
   Future<void> loadItemsData();
+  Future<void> loadCategoriesData();
   Future<void> logout();
-
-  // void handleTabNavigation(int index);
-
-  // void initValues();
-
-  // List<ItemEntity> getItemsForDay(DateTime day);
 }
