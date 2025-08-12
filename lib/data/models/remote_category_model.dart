@@ -4,25 +4,25 @@ import '../protocols/http/http_error.dart';
 
 class RemoteCategoryModel {
   final int id;
-  final String title;
-  final List<DynamicFieldEntity>? fields;
+  final String name;
+  final List<DynamicFieldEntity>? dynamicFields;
 
   RemoteCategoryModel({
     required this.id,
-    required this.title,
-    required this.fields,
+    required this.name,
+    required this.dynamicFields,
   });
 
   factory RemoteCategoryModel.fromJson(Map json) {
-    if (!json.keys.toSet().containsAll(['id', 'title', 'fields'])) {
+    if (!json.keys.toSet().containsAll(['id', 'name', 'dynamicFields'])) {
       throw HttpError.invalidData;
     }
 
     return RemoteCategoryModel(
       id: json['id'],
-      title: json['title'],
-      fields: json['fields'] != null
-          ? (json['fields'] as List)
+      name: json['name'],
+      dynamicFields: json['dynamicFields'] != null
+          ? (json['dynamicFields'] as List)
               .map((fieldJson) => DynamicFieldEntity.fromJson(fieldJson))
               .toList()
           : null,
@@ -31,7 +31,7 @@ class RemoteCategoryModel {
 
   CategoryEntity toEntity() => CategoryEntity(
         id: id,
-        title: title,
-        fields: fields,
+        name: name,
+        dynamicFields: dynamicFields,
       );
 }

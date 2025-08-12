@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 
+import 'package:personal_health_app/domain/entities/item.dart';
 import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
 
 import '../../../domain/usecases/usecases.dart';
@@ -69,10 +70,7 @@ class GetxHomePagePresenter extends GetxController
       final account = await loadCurrentAccount.load();
 
       final categories = await loadCategories.load(account.id);
-      _categories.value = categories
-          .map((item) =>
-              CategoryEntity(id: item.id, title: item.title, fields: item.fields))
-          .toList();
+      _categories.value = categories;
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {
         isSessionExpired = true;

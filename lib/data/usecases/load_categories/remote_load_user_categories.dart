@@ -17,12 +17,16 @@ class RemoteLoadUserCategories implements LoadUserCategories {
     final fullUrl = url.replaceFirst(RegExp(r':user_id'), '$userId');
 
     try {
-      final httpResponse = await httpClient.request(url: fullUrl, method: 'get');
+      final httpResponse =
+          await httpClient.request(url: fullUrl, method: 'get');
       final responseBody = httpResponse['body'];
 
-      return responseBody
-          .map<CategoryEntity>((json) => RemoteCategoryModel.fromJson(json).toEntity())
+      final entityList = responseBody
+          .map<CategoryEntity>(
+              (json) => RemoteCategoryModel.fromJson(json).toEntity())
           .toList();
+
+      return entityList;
     } on HttpError catch (error) {
       throw error == HttpError.unauthorized
           ? DomainError.accessDenied

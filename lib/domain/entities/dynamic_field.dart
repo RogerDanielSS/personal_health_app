@@ -15,13 +15,13 @@ class DynamicFieldEntity {
     return DynamicFieldEntity(
       id: json['id'],
       name: json['name'],
-      dataType: json['data_type'],
+      dataType: json['dataType'],
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'data_type': dataType,
+        'dataType': dataType,
       };
 }
