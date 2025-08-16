@@ -67,80 +67,105 @@ class _HomePageState extends State<HomePage> {
   // }
 
   List<PopupMenuItem> getMenuItems(List<CategoryEntity> categories) {
-    return categories.map((category) => PopupMenuItem(value: category.id, child: Text(category.name),)).toList();
+    return categories
+        .map((category) => PopupMenuItem(
+              value: category.id,
+              child: Text(category.name),
+            ))
+        .toList();
   }
 
-void _showScrollableMenu(BuildContext context) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    final renderObject = _fabKey.currentContext?.findRenderObject();
-    if (renderObject == null || !(renderObject is RenderBox)) return;
+  void _showScrollableMenu(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final renderObject = _fabKey.currentContext?.findRenderObject();
+      if (renderObject == null || !(renderObject is RenderBox)) return;
 
-    final fabRenderBox = renderObject as RenderBox;
-    final fabSize = fabRenderBox.size;
-    final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
+      final fabRenderBox = renderObject as RenderBox;
+      final fabSize = fabRenderBox.size;
+      final fabOffset = fabRenderBox.localToGlobal(Offset.zero);
 
-    showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        fabOffset.dx,
-        fabOffset.dy - MediaQuery.of(context).size.height * 0.3,
-        fabOffset.dx + fabSize.width,
-        fabOffset.dy + fabSize.height,
-      ),
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.3,
-        maxWidth: 250,
-      ),
-      items: [
-        // Show loading while waiting for data
-        PopupMenuItem(
-          child: StreamBuilder<List<CategoryEntity>>(
-            stream: widget.presenter.categoriesStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No categories available');
-              }
-              return Column(
-                children: getMenuItems(snapshot.data!),
-              );
-            },
-          ),
+      showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(
+          fabOffset.dx,
+          fabOffset.dy - MediaQuery.of(context).size.height * 0.3,
+          fabOffset.dx + fabSize.width,
+          fabOffset.dy + fabSize.height,
         ),
-      ],
-    );
-  });
-}
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.3,
+          maxWidth: 250,
+        ),
+        items: [
+          // Show loading while waiting for data
+          PopupMenuItem(
+            child: StreamBuilder<List<CategoryEntity>>(
+              stream: widget.presenter.categoriesStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('No categories available');
+                }
+                return Column(
+                  children: getMenuItems(snapshot.data!),
+                );
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: widget.presenter.itemsStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+        body: StreamBuilder(
+          stream: widget.presenter.itemsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  ItemsList(
+                    items: snapshot.data!,
+                  ),
+                ],
+              );
+            }
 
-              children: <Widget>[
-                ItemsList(
-                  items: snapshot.data!,
-                ),
-              ],
-            );
-          }
+            return const CircularLoading();
+          },
+        ),
+        floatingActionButton: StreamBuilder(
+          stream: widget.presenter.categoriesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return FloatingActionButton(
+                key: _fabKey,
+                onPressed: () => {
+                  widget.presenter.saveCategory(snapshot.data!.first).then(
+                      (_) => Navigator.pushNamed(context, '/create_item')),
+                  // Navigator.pushNamed(context, '/create_item')
+                },
+                tooltip: 'Increment',
+                child: const Icon(Icons.add),
+              );
+            }
 
-          return const CircularLoading();
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        key: _fabKey,
-        onPressed: () => _showScrollableMenu(context),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+            return const CircularLoading();
+          },
+        ));
   }
 }
+
+
+      // floatingActionButton:
+      //  FloatingActionButton(
+      //   key: _fabKey,
+      //   onPressed: () => {Navigator.pushNamed(context, '/create_item')},
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),

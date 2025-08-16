@@ -16,6 +16,7 @@ class GetxHomePagePresenter extends GetxController
   final LoadUserCategories loadCategories;
   final DeleteCurrentAccount deleteCurrentAccount;
   final LoadCurrentAccount loadCurrentAccount;
+  final SaveCurrentCategory saveCurrentCategory;
 
   final _items = Rx<List<ItemEntity>>([]);
   final _itemsError = Rx<String>('');
@@ -28,6 +29,7 @@ class GetxHomePagePresenter extends GetxController
     required this.loadCategories,
     required this.deleteCurrentAccount,
     required this.loadCurrentAccount,
+    required this.saveCurrentCategory
   });
 
   @override
@@ -79,6 +81,20 @@ class GetxHomePagePresenter extends GetxController
       }
     } on Error {
       setCategoryError();
+    }
+  }
+
+
+  @override
+  Future<void> saveCategory(CategoryEntity category) async {
+    try {
+      mainError = null;
+      _categoriesError.value = '';
+
+      await saveCurrentCategory.save(category);
+
+    } on Error {
+      mainError = UIError.unexpected;
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/main/factories/pages/create_item_page/create_item_page_factory.dart';
 import 'package:personal_health_app/main/factories/usecases/usecases.dart';
 
 import 'main/factories/pages/home_page/home_page_factory.dart';
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
         '/profile': (context) =>
             MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
+        '/create_item': (context) =>
+            MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeCreateItemPage()),
       },
     );
   }

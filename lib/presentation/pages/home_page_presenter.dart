@@ -10,5 +10,6 @@ abstract class HomePagePresenter implements Listenable {
 
   Future<void> loadItemsData();
   Future<void> loadCategoriesData();
+  Future<void> saveCategory(CategoryEntity category);
   Future<void> logout();
 }

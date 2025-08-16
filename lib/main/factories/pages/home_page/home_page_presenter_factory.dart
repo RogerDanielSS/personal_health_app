@@ -6,6 +6,7 @@ import '../../usecases/usecases.dart';
 
 HomePagePresenter makeGetxHomePresenter() {
   return GetxHomePagePresenter(
+      saveCurrentCategory: makeLocalSaveCurrentCategory(),
       loadItems: makeRemoteLoadItems(),
       loadCategories: makeRemoteLoadCategories(),
       deleteCurrentAccount: makeLocalDeleteCurrentAccount(),

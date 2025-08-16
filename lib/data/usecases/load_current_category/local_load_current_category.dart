@@ -6,11 +6,9 @@ import '../../../domain/usecases/usecases.dart';
 import '../../protocols/cache/cache.dart';
 
 class LocalLoadCurrentCategory implements LoadCurrentCategory {
-  final FetchSecureCacheStorage fetchSecureCacheStorage;
   final CacheStorage cacheStorage;
 
   const LocalLoadCurrentCategory({
-    required this.fetchSecureCacheStorage,
     required this.cacheStorage,
   });
 

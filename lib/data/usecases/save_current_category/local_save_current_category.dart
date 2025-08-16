@@ -6,10 +6,9 @@ import '../../../domain/usecases/usecases.dart';
 import '../../protocols/cache/cache.dart';
 
 class LocalSaveCurrentCategory implements SaveCurrentCategory {
-  SaveSecureCacheStorage saveSecureCacheStorage;
   final CacheStorage cacheStorage;
 
-  LocalSaveCurrentCategory({required this.saveSecureCacheStorage, required this.cacheStorage});
+  LocalSaveCurrentCategory({required this.cacheStorage});
 
   @override
   Future<void> save(CategoryEntity category) async {
