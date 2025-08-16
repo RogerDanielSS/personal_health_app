@@ -22,10 +22,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey _fabKey = GlobalKey();
-  UserEntity? _currentAccount;
-  List<ItemEntity>? _items;
-  bool _isLoading = true; // Add loading state
-  String? _errorMessage; // Add error state
+  // UserEntity? _currentAccount;
+  // List<ItemEntity>? _items;
+  // bool _isLoading = true; // Add loading state
+  // String? _errorMessage; // Add error state
 
   @override
   void initState() {
@@ -38,33 +38,33 @@ class _HomePageState extends State<HomePage> {
   Future<void> _initializePage() async {
     widget.presenter.loadItemsData();
     widget.presenter.loadCategoriesData();
-    await _loadCurrentAccount();
+    // await _loadCurrentAccount();
   }
 
-  Future<void> _loadCurrentAccount() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
+  // Future<void> _loadCurrentAccount() async {
+  //   try {
+  //     setState(() {
+  //       _isLoading = true;
+  //       _errorMessage = null;
+  //     });
 
-      final account = await widget.loadCurrentAccount.load();
+  //     final account = await widget.loadCurrentAccount.load();
 
-      setState(() {
-        _currentAccount = account;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Failed to load account';
-      });
+  //     setState(() {
+  //       _currentAccount = account;
+  //       _isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _isLoading = false;
+  //       _errorMessage = 'Failed to load account';
+  //     });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load account: ${e.toString()}')),
-      );
-    }
-  }
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to load account: ${e.toString()}')),
+  //     );
+  //   }
+  // }
 
   List<PopupMenuItem> getMenuItems(List<CategoryEntity> categories) {
     return categories.map((category) => PopupMenuItem(value: category.id, child: Text(category.name),)).toList();
