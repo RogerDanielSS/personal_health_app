@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class StyledTextFormField extends StatefulWidget {
   const StyledTextFormField({
     super.key,
-    required this.controller,
+    this.controller,
     this.enableObscureText = false,
     this.label = '',
     required this.keyboardType,
     required this.validator,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool enableObscureText;
   final String label;
   final TextInputType keyboardType;

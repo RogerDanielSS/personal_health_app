@@ -15,7 +15,7 @@ class LocalLoadCurrentCategory implements LoadCurrentCategory {
   @override
   Future<CategoryEntity> load() async {
     try {
-      final currentCategory = await cacheStorage.fetch('user');
+      final currentCategory = await cacheStorage.fetch('category');
 
       if (currentCategory == null) throw Error();
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/presentation/components/fields/fields_list.dart';
 import 'package:personal_health_app/presentation/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/presentation/pages/create_item/create_item_page_presenter.dart';
 
 class CreateItemPage extends StatefulWidget {
   final CreateItemPagePresenter presenter;
 
-  const CreateItemPage(
-      {super.key, required this.presenter});
+  const CreateItemPage({super.key, required this.presenter});
 
   @override
   State<CreateItemPage> createState() => _CreateItemPageState();
@@ -34,10 +34,7 @@ class _CreateItemPageState extends State<CreateItemPage> {
           if (snapshot.hasData) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
-
-              children: <Widget>[
-                Text(snapshot.data?.name ?? '')
-              ],
+              children: <Widget>[FieldsList(dynamicFields: snapshot.data?.dynamicFields)],
             );
           }
 
