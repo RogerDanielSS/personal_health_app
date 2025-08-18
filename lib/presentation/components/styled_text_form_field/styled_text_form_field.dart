@@ -8,6 +8,7 @@ class StyledTextFormField extends StatefulWidget {
     this.enableObscureText = false,
     this.readOnly = false,
     this.label = '',
+    this.suffixIcon,
     this.onTap,
     required this.keyboardType,
     required this.validator,
@@ -17,6 +18,7 @@ class StyledTextFormField extends StatefulWidget {
   final bool enableObscureText;
   final bool readOnly;
   final String label;
+  final Widget? suffixIcon;
   final TextInputType keyboardType;
   final FormFieldValidator<String> validator;
   final void Function()? onTap;
@@ -42,15 +44,7 @@ class _StyledTextFormFieldState extends State<StyledTextFormField> {
       onTap: widget.onTap,
       readOnly: widget.readOnly,
       decoration: InputDecoration(
-        suffixIcon: widget.enableObscureText
-            ? IconButton(
-                icon: Icon(
-                  _obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey[600],
-                ),
-                onPressed: _togglePasswordVisibility,
-              )
-            : null,
+        suffixIcon: widget.suffixIcon,
         labelText: widget.label,
         filled: true,
         fillColor: Colors.white,

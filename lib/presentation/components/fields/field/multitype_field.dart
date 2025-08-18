@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
+import 'package:personal_health_app/presentation/components/datepicker%20/datepicker.dart';
 import 'package:personal_health_app/presentation/components/styled_text_form_field.dart';
 
 class MultiTypeField extends StatelessWidget {
-  final DynamicFieldEntity? dynamicField;
-  // final TextEditingController _stringTextTypeController = TextEditingController();
+  final DynamicFieldEntity dynamicField;
+  final TextEditingController textController;
 
   const MultiTypeField({
     super.key,
-    this.dynamicField,
+    required this.dynamicField,
+    required this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (dynamicField?.dataType == 'date') {
+    if (dynamicField.dataType == 'date') {
+      return DatePickerTextField(
+        label: dynamicField.name,
+        controller: textController,
+      );
+    }
+    if (dynamicField.dataType == 'float') {
       return StyledTextFormField(
-        label: dynamicField?.name ?? '',
+        label: dynamicField.name,
+        controller: textController,
         keyboardType: TextInputType.datetime,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -25,10 +34,10 @@ class MultiTypeField extends StatelessWidget {
         },
       );
     }
-    if (dynamicField?.dataType == 'float') return TextField();
 
     return StyledTextFormField(
-      label: dynamicField?.name ?? '',
+      label: dynamicField.name,
+      controller: textController,
       keyboardType: TextInputType.none,
       validator: (value) {
         if (value == null || value.isEmpty) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:personal_health_app/main/factories/pages/create_item_page/create_item_page_factory.dart';
 import 'package:personal_health_app/main/factories/usecases/usecases.dart';
 
 import 'main/factories/pages/home_page/home_page_factory.dart';
 import 'presentation/components/main_layout.dart';
-import 'presentation/pages/home_page.dart';
 import 'presentation/pages/login.dart';
 
 void main() {
@@ -17,6 +17,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('pt', 'BR'), // Brazilian Portuguese
+      ],
       debugShowCheckedModeBanner: false,
       title: 'My App',
       theme: ThemeData(primarySwatch: Colors.yellow),
@@ -27,11 +35,15 @@ class MyApp extends StatelessWidget {
       ),
       // Named routes for post-login screens
       routes: {
-        '/home': (context) => MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
-        '/profile': (context) =>
-            MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeHomePage()),
-        '/create_item': (context) =>
-            MainLayout(loadCurrentAccount: makeLocalLoadCurrentAccount(), child: makeCreateItemPage()),
+        '/home': (context) => MainLayout(
+            loadCurrentAccount: makeLocalLoadCurrentAccount(),
+            child: makeHomePage()),
+        '/profile': (context) => MainLayout(
+            loadCurrentAccount: makeLocalLoadCurrentAccount(),
+            child: makeHomePage()),
+        '/create_item': (context) => MainLayout(
+            loadCurrentAccount: makeLocalLoadCurrentAccount(),
+            child: makeCreateItemPage()),
       },
     );
   }

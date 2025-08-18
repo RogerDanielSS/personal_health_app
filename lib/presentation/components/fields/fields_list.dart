@@ -4,14 +4,16 @@ import 'package:personal_health_app/presentation/components/fields/field/multity
 
 class FieldsList extends StatelessWidget {
   final List<DynamicFieldEntity>? dynamicFields;
+  final TextEditingController _controller = TextEditingController();
 
-  const FieldsList({super.key, this.dynamicFields});
+  FieldsList({super.key, this.dynamicFields});
 
   List<Widget> buildFields(int count) {
     return List.generate(
         count,
         (index) => MultiTypeField(
               dynamicField: dynamicFields![index],
+              textController: _controller,
             ));
   }
 
