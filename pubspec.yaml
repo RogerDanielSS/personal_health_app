@@ -23,7 +23,7 @@ environment:
 
 dependencies:
   get:
-  intl: ^0.18.1
+  intl: ^0.20.2
   http: ^1.1.0
   flutter_dotenv: ^5.1.0
   localstorage: ^4.0.1+4
