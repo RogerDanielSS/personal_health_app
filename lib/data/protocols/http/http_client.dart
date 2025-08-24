@@ -7,6 +7,6 @@ abstract class HttpClient {
     Map<String, String>? queryParams,
     bool? responseIsFile,
     bool? requestIsFile,
-    bool? convertToSnakeCase,
+    bool? skipSnakeCaseConvertion,
   });
 }

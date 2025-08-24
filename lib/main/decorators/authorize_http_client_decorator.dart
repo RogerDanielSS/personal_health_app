@@ -25,7 +25,7 @@ class AuthorizeHttpClientDecorator implements HttpClient {
     Map<String, String>? queryParams,
     bool? requestIsFile,
     bool? responseIsFile,
-    bool? convertToSnakeCase,
+    bool? skipSnakeCaseConvertion,
   }) async {
     try {
       final token = await fetchSecureCacheStorage.fetch('token');

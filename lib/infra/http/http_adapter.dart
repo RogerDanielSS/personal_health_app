@@ -20,18 +20,18 @@ class HttpAdapter implements HttpClient {
     Map<String, String>? queryParams,
     bool? responseIsFile,
     bool? requestIsFile,
-    bool? convertToSnakeCase = true,
+    bool? skipSnakeCaseConvertion,
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {}
       ..addAll({'content-type': 'application/json', 'accept': 'application/json'});
 
     String? jsonBody;
     if (body != null && (requestIsFile == null || requestIsFile == false)) {
-      if (convertToSnakeCase == true) {
+      if (skipSnakeCaseConvertion == true) {
+        jsonBody = jsonEncode(body);
+      } else {
         final snakedCaseBody = deepKeyTransform(body, camelToSnake);
         jsonBody = jsonEncode(snakedCaseBody);
-      } else {
-        jsonBody = jsonEncode(body);
       }
     } else {
       jsonBody = null;

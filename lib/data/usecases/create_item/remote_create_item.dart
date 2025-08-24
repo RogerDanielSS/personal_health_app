@@ -18,11 +18,11 @@ class RemoteCreateItem implements CreateItem {
         'title': item.title,
         'category_id': item.categoryId,
         'fields': item.fields,
-      };;
+      };
 
     try {
       final httpResponse =
-          await httpClient.request(url: url, method: 'post', body: body);
+          await httpClient.request(url: url, method: 'post', body: body, skipSnakeCaseConvertion: false);
       final responseBody = httpResponse['body'];
 
       final entityList = responseBody
