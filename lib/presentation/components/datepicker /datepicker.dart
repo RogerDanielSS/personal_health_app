@@ -18,6 +18,7 @@ class DatePickerTextField extends StatefulWidget {
 
 class _DatePickerTextFieldState extends State<DatePickerTextField> {
   DateTime? _selectedDate;
+  final TextEditingController internalController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -34,7 +35,8 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
         // widget.controller.text = "${picked.toLocal()}".split(' ')[0];
         
         // Or format the date as you prefer:
-        widget.controller.text = DateFormat('dd/MM/yyyy').format(picked);
+        widget.controller.text = DateFormat('yyyy-MM-dd').format(picked);
+        internalController.text = DateFormat('dd/MM/yyyy').format(picked);
       });
     }
   }
@@ -42,7 +44,7 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
   @override
   Widget build(BuildContext context) {
     return StyledTextFormField(
-      controller: widget.controller,
+      controller: internalController,
       label: widget.label,
       onTap: () => _selectDate(context),
       readOnly: true, 

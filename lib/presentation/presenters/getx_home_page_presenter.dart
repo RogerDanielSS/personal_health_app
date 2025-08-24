@@ -50,7 +50,7 @@ class GetxHomePagePresenter extends GetxController
       final items = await loadItems.load(account.id);
       _items.value = items
           .map((item) =>
-              ItemEntity(id: item.id, title: item.title, fields: item.fields))
+              ItemEntity(id: item.id, categoryId: item.categoryId, title: item.title, fields: item.fields))
           .toList();
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {

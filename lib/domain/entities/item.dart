@@ -1,11 +1,13 @@
 class ItemEntity {
-  final int id;
+  final int? id;
+  final int categoryId;
   final String title;
   final Map<String, String>? fields;
 
   const ItemEntity({
-    required this.id,
+    this.id,
     required this.title,
+    required this.categoryId,
     required this.fields,
   });
 
@@ -14,6 +16,7 @@ class ItemEntity {
   factory ItemEntity.fromJson(Map<String, dynamic> json) {
     return ItemEntity(
       id: json['id'],
+      categoryId: json['categoryId'],
       title: json['title'],
       fields: Map<String, String>.from(json['fields'] ?? {}),
     );
@@ -22,6 +25,7 @@ class ItemEntity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
+        'categoryId': categoryId,
         'fields': fields,
       };
 }

@@ -11,10 +11,11 @@ class GetxCreateItemPagePresenter extends GetxController
     with SessionManager, NavigationManager, UIErrorManager, LoadingManager
     implements CreateItemPagePresenter {
   final LoadCurrentCategory loadCurrentCategory;
+  final CreateItem createItem;
 
   final _category = Rx<CategoryEntity?>(null);
 
-  GetxCreateItemPagePresenter({required this.loadCurrentCategory});
+  GetxCreateItemPagePresenter({required this.loadCurrentCategory, required this.createItem});
 
   @override
   Stream<CategoryEntity?> get currentCategoryStream => _category.stream;
@@ -27,6 +28,16 @@ class GetxCreateItemPagePresenter extends GetxController
         throw DomainError.unexpected;
       }
       _category.value = currentCategory;
+    } on Error {
+      mainError = UIError.unexpected;
+    }
+  }
+
+  @override
+  Future<void> createItemData(int categoryId, Map<String, String> fields) async {
+    try {
+      final item = ItemEntity(title: 'title', categoryId: categoryId, fields: fields);
+      await createItem.create(item);
     } on Error {
       mainError = UIError.unexpected;
     }
