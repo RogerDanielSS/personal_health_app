@@ -41,6 +41,7 @@ class AuthorizeHttpClientDecorator implements HttpClient {
         queryParams: queryParams,
         requestIsFile: requestIsFile,
         responseIsFile: responseIsFile,
+        skipSnakeCaseConvertion: skipSnakeCaseConvertion
       );
     } catch (error) {
       if (error is HttpError && error != HttpError.forbidden) {

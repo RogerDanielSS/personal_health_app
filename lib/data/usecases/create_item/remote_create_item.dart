@@ -22,7 +22,7 @@ class RemoteCreateItem implements CreateItem {
 
     try {
       final httpResponse =
-          await httpClient.request(url: url, method: 'post', body: body, skipSnakeCaseConvertion: false);
+          await httpClient.request(url: url, method: 'post', body: body, skipSnakeCaseConvertion: true);
       final responseBody = httpResponse['body'];
 
       final entityList = responseBody
