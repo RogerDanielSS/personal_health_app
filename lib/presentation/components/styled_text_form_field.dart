@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class StyledTextFormField extends StatefulWidget {
   const StyledTextFormField({
@@ -8,6 +9,7 @@ class StyledTextFormField extends StatefulWidget {
     this.readOnly = false,
     this.label = '',
     this.onTap,
+    this.inputFormatters,
     required this.keyboardType,
     required this.validator,
   });
@@ -18,6 +20,7 @@ class StyledTextFormField extends StatefulWidget {
   final String label;
   final TextInputType keyboardType;
   final FormFieldValidator<String> validator;
+  final List<TextInputFormatter>? inputFormatters;
   final void Function()? onTap;
 
   @override
@@ -40,6 +43,7 @@ class _StyledTextFormFieldState extends State<StyledTextFormField> {
       obscureText: widget.enableObscureText && _obscureText,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
+      inputFormatters: widget.inputFormatters,
       decoration: InputDecoration(
         suffixIcon: widget.enableObscureText
             ? IconButton(
