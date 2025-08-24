@@ -46,42 +46,45 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StreamBuilder(
-          stream: widget.presenter.itemsStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
+      body: StreamBuilder(
+        stream: widget.presenter.itemsStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   ItemsList(
                     items: snapshot.data!,
                   ),
                 ],
-              );
-            }
+              ),
+            );
+          }
 
-            return const CircularLoading();
-          },
-        ),
-        floatingActionButton: StreamBuilder(
-          stream: widget.presenter.categoriesStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return FloatingActionButton(
-                key: _fabKey,
-                onPressed: () => {
-                  widget.presenter.saveCategory(snapshot.data!.first).then(
-                      (_) => Navigator.pushNamed(context, '/create_item')),
-                  // Navigator.pushNamed(context, '/create_item')
-                },
-                tooltip: 'Increment',
-                child: const Icon(Icons.add),
-              );
-            }
+          return const CircularLoading();
+        },
+      ),
+      floatingActionButton: StreamBuilder(
+        stream: widget.presenter.categoriesStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return FloatingActionButton(
+              key: _fabKey,
+              onPressed: () => {
+                widget.presenter
+                    .saveCategory(snapshot.data!.first)
+                    .then((_) => Navigator.pushNamed(context, '/create_item')),
+              },
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            );
+          }
 
-            return const CircularLoading();
-          },
-        ));
+          return const CircularLoading();
+        },
+      ),
+    );
   }
 }
 

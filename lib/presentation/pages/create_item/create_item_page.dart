@@ -32,16 +32,11 @@ class _CreateItemPageState extends State<CreateItemPage> {
         stream: widget.presenter.currentCategoryStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                DynamicFieldsForm(
-                  dynamicFields: snapshot.data?.dynamicFields,
-                  onSubmit: (Map<String, String> fields) {
-                    widget.presenter.createItemData(snapshot.data!.id, fields);
-                  },
-                )
-              ],
+            return DynamicFieldsForm(
+              dynamicFields: snapshot.data?.dynamicFields,
+              onSubmit: (Map<String, String> fields) {
+                widget.presenter.createItemData(snapshot.data!.id, fields);
+              },
             );
           }
 

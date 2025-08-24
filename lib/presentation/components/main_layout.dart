@@ -73,7 +73,18 @@ class _MainLayoutState extends State<MainLayout> {
           if (index == 1) Navigator.pushNamed(context, '/profile');
         },
       ),
-      body: widget.child, // This renders the current page (e.g., HomePage)
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade50,
+          image: DecorationImage(
+            image: AssetImage('assets/background_1920x1080.png'), // Local image
+            fit: BoxFit.cover,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Container(
+            constraints: BoxConstraints(maxWidth: 900), child: widget.child),
+      ), // This renders the current page (e.g., HomePage)
     );
   }
 }
