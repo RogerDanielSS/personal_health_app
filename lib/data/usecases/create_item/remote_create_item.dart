@@ -14,7 +14,11 @@ class RemoteCreateItem implements CreateItem {
 
   @override
   Future<ItemEntity> create(ItemEntity item) async {
-    final body = item.toJson();
+    final body = {
+        'title': item.title,
+        'category_id': item.categoryId,
+        'fields': item.fields,
+      };;
 
     try {
       final httpResponse =
