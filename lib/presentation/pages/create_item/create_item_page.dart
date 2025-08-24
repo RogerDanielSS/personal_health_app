@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/presentation/components/fields/dynamic_fields_form.dart';
 import 'package:personal_health_app/presentation/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/presentation/pages/create_item/create_item_page_presenter.dart';

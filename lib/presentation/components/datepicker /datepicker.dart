@@ -50,7 +50,9 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
       readOnly: true, 
       suffixIcon: Icon(Icons.calendar_today),
       keyboardType: TextInputType.none, 
-      validator: (String? value) {  }, // Prevents keyboard from appearing
+      validator: (String? value) {
+        return null;
+        }, // Prevents keyboard from appearing
     );
   }
 

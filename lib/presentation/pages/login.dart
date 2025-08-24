@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/usecases/usecases.dart';
 import 'package:personal_health_app/presentation/components/styled_text_form_field.dart';
 
-import '../../main/factories/pages/home_page/home_page_factory.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
