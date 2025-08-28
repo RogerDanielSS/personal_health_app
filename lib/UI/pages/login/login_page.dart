@@ -10,9 +10,13 @@ class LoginPage extends StatelessWidget with NavigationManager {
   final TextEditingController _passwordController = TextEditingController();
   final LoginPagePresenter presenter;
 
-  LoginPage(
-      {super.key,
-      required this.presenter});
+  LoginPage({super.key, required this.presenter});
+
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      presenter.login(_emailController.text, _passwordController.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +54,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
                           controller: _emailController,
                           label: 'Email',
                           keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Insira seu email';
-                            }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                .hasMatch(value)) {
-                              return 'Enter a valid email';
-                            }
-                            return null;
-                          },
+                          validator: presenter.validateEmail,
                         ),
                         SizedBox(height: 16),
                         StyledTextFormField(
@@ -67,12 +62,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
                           label: 'Senha',
                           enableObscureText: true,
                           keyboardType: TextInputType.none,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Por favor, insira sua senha';
-                            }
-                            return null;
-                          },
+                          validator: presenter.validatePassword,
                         ),
                         SizedBox(height: 24),
                         ElevatedButton(
@@ -88,8 +78,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
                               ),
                             ),
                           ),
-                          onPressed: () => presenter.login(
-                              _emailController.text, _passwordController.text),
+                          onPressed: _submitForm,
                           child: Text('Entrar'),
                         ),
                       ],

@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
-import 'package:personal_health_app/domain/entities/entities.dart';
 
-import 'package:personal_health_app/UI/pages/home/home_page_presenter.dart';
 import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
+import 'package:personal_health_app/presentation/mixins/validation_manager.dart';
 
 import '../../../domain/usecases/usecases.dart';
-import '../../domain/helpers/domain_error.dart';
-import '../helpers/errors/ui_error.dart';
 import '../mixins/mixins.dart';
 
 class GetxLoginPagePresenter extends GetxController
-    with SessionManager, NavigationManager, UIErrorManager, LoadingManager
+    with
+        SessionManager,
+        NavigationManager,
+        ValidationManager,
+        UIErrorManager,
+        LoadingManager
     implements LoginPagePresenter {
   final Authentication authentication;
   final SaveCurrentAccount saveCurrentAccount;
