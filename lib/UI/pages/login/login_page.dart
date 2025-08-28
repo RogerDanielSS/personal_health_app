@@ -1,55 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/domain/usecases/usecases.dart';
-import 'package:personal_health_app/presentation/components/styled_text_form_field.dart';
+import 'package:personal_health_app/UI/components/styled_text_form_field.dart';
+import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
 
+import './../../mixins/navigation_manager.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatelessWidget with NavigationManager {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LoginPagePresenter presenter;
 
-  final Authentication authentication;
-  final SaveCurrentAccount saveCurrentAccount;
-
-  LoginPage({
-    super.key,
-    required this.authentication,
-    required this.saveCurrentAccount,
-  });
-
-  Future<void> _login(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
-
-      // Perform login logic here (e.g., API call)
-
-      try {
-        final account = await authentication
-            .auth(AuthenticationParams(email: email, password: password));
-
-        await saveCurrentAccount.save(account);
-
-        // Navigate to the HomePage only if login is successful
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => makeHomePage()),
-        // );
-// Inside LoginPage's _login method:
-        Navigator.pushReplacementNamed(context, '/home');
-      } catch (e) {
-        // Handle any errors that occur during the login process
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred. Please try again later.')),
-        );
-      }
-    }
-  }
+  LoginPage(
+      {super.key,
+      required this.presenter});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return Scaffold(body: Builder(builder: (context) {
+      handleNavigation(presenter.navigateToStream, clear: true);
+
+      return Container(
           decoration: BoxDecoration(
             color: Colors.grey.shade50,
             image: DecorationImage(
@@ -99,10 +69,7 @@ class LoginPage extends StatelessWidget {
                           keyboardType: TextInputType.none,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters long';
+                              return 'Por favor, insira sua senha';
                             }
                             return null;
                           },
@@ -121,14 +88,15 @@ class LoginPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onPressed: () => _login(context),
+                          onPressed: () => presenter.login(
+                              _emailController.text, _passwordController.text),
                           child: Text('Entrar'),
                         ),
                       ],
                     ),
                   )),
             ],
-          )),
-    );
+          ));
+    }));
   }
 }

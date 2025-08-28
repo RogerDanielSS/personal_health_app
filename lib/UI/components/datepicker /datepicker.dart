@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:personal_health_app/presentation/components/styled_text_form_field/styled_text_form_field.dart';
+import 'package:personal_health_app/UI/components/styled_text_form_field/styled_text_form_field.dart';
 
 class DatePickerTextField extends StatefulWidget {
   const DatePickerTextField({

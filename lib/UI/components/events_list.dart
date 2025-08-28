@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/entities/item.dart';
-import 'package:personal_health_app/presentation/components/card.dart';
+import 'package:personal_health_app/UI/components/card.dart';
 
 class ItemsList extends StatelessWidget {
   final List<ItemEntity>? items;

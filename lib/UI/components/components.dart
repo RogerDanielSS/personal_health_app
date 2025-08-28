@@ -1,3 +1,3 @@
 export 'build_bottom_bar.dart';
 export 'styled_text_form_field.dart';
-export 'main_layout.dart';
+export 'main_layout/main_layout.dart';

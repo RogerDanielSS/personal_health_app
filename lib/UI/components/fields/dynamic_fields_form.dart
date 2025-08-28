@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
-import 'package:personal_health_app/presentation/components/fields/field/multitype_field.dart';
+import 'package:personal_health_app/UI/components/fields/field/multitype_field.dart';
 
 class DynamicFieldsForm extends StatefulWidget {
   final List<DynamicFieldEntity>? dynamicFields;

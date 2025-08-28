@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/domain/usecases/load_current_account.dart';
-import 'package:personal_health_app/presentation/components/events_list.dart';
-import 'package:personal_health_app/presentation/components/loadings/circular_loading.dart';
-import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
+import 'package:personal_health_app/UI/components/events_list.dart';
+import 'package:personal_health_app/UI/components/loadings/circular_loading.dart';
+import 'package:personal_health_app/UI/pages/home/home_page_presenter.dart';
 
 class HomePage extends StatefulWidget {
   final HomePagePresenter presenter;
