@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 
-import 'package:personal_health_app/presentation/pages/home_page_presenter.dart';
+import 'package:personal_health_app/UI/pages/home/home_page_presenter.dart';
 
 import '../../../domain/usecases/usecases.dart';
 import '../../domain/helpers/domain_error.dart';
