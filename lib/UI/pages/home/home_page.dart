@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      widget.handleNavigation(widget.presenter.navigateToStream, clear: true);
+      widget.handleNavigation(widget.presenter.navigateToStream);
 
       return Scaffold(
         body: StreamBuilder(

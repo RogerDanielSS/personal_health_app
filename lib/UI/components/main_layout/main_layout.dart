@@ -61,7 +61,7 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      widget.handleNavigation(widget.presenter.navigateToStream, clear: true);
+      widget.handleNavigation(widget.presenter.navigateToStream);
 
       return Scaffold(
         appBar: AppBar(

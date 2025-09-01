@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Builder(builder: (context) {
-      handleNavigation(presenter.navigateToStream, clear: true);
+      handleNavigation(presenter.navigateToStream);
 
       return Container(
           decoration: BoxDecoration(
