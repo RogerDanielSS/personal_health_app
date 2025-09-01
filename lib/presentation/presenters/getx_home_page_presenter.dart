@@ -12,31 +12,21 @@ class GetxHomePagePresenter extends GetxController
     with SessionManager, NavigationManager, UIErrorManager, LoadingManager
     implements HomePagePresenter {
   final LoadUserItems loadItems;
-  final LoadUserCategories loadCategories;
-  final DeleteCurrentAccount deleteCurrentAccount;
   final LoadCurrentAccount loadCurrentAccount;
-  final SaveCurrentCategory saveCurrentCategory;
 
   final _items = Rx<List<ItemEntity>>([]);
   final _itemsError = Rx<String>('');
   final _selectedItem = Rx<ItemEntity?>(null);
-  final _categories = Rx<List<CategoryEntity>>([]);
-  final _categoriesError = Rx<String>('');
 
   GetxHomePagePresenter({
     required this.loadItems,
-    required this.loadCategories,
-    required this.deleteCurrentAccount,
-    required this.loadCurrentAccount,
-    required this.saveCurrentCategory
+    required this.loadCurrentAccount
   });
 
   @override
   Stream<ItemEntity?> get selectedItemStream => _selectedItem.stream;
   @override
   Stream<List<ItemEntity>> get itemsStream => _items.stream;
-  @override
-  Stream<List<CategoryEntity>> get categoriesStream => _categories.stream;
 
   @override
   Future<void> loadItemsData() async {
@@ -63,45 +53,9 @@ class GetxHomePagePresenter extends GetxController
   }
 
   @override
-  Future<void> loadCategoriesData() async {
+  Future<void> handleAddNewItem() async {
     try {
-      mainError = null;
-      _categoriesError.value = '';
-
-      final account = await loadCurrentAccount.load();
-
-      final categories = await loadCategories.load(account.id);
-      _categories.value = categories;
-    } on DomainError catch (error) {
-      if (error == DomainError.accessDenied) {
-        isSessionExpired = true;
-      } else {
-        setCategoryError();
-      }
-    } on Error {
-      setCategoryError();
-    }
-  }
-
-
-  @override
-  Future<void> saveCategory(CategoryEntity category) async {
-    try {
-      mainError = null;
-      _categoriesError.value = '';
-
-      await saveCurrentCategory.save(category);
-
-    } on Error {
-      mainError = UIError.unexpected;
-    }
-  }
-
-  @override
-  Future<void> logout() async {
-    try {
-      await deleteCurrentAccount.delete();
-      navigateTo = '/login';
+      navigateTo = '/items/select_category';
     } on Error {
       mainError = UIError.unexpected;
     }
@@ -110,9 +64,5 @@ class GetxHomePagePresenter extends GetxController
   void setError() {
     _itemsError.value = UIError.unexpected.description;
     _items.refresh();
-  }
-  void setCategoryError() {
-    _categoriesError.value = UIError.unexpected.description;
-    _categories.refresh();
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:personal_health_app/UI/mixins/navigation_manager.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/domain/usecases/load_current_account.dart';
-import 'package:personal_health_app/UI/components/events_list.dart';
+import 'package:personal_health_app/UI/components/items_cards_list/items_list.dart';
 import 'package:personal_health_app/UI/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/UI/pages/home/home_page_presenter.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget with NavigationManager {
   final HomePagePresenter presenter;
   final LoadCurrentAccount loadCurrentAccount;
   // final LoadUserItems loadUserItems;
@@ -30,8 +31,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initializePage() async {
     widget.presenter.loadItemsData();
-    widget.presenter.loadCategoriesData();
-    // await _loadCurrentAccount();
   }
 
   List<PopupMenuItem> getMenuItems(List<CategoryEntity> categories) {
@@ -45,54 +44,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: widget.presenter.itemsStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  ItemsList(
-                    items: snapshot.data!,
-                  ),
-                ],
-              ),
-            );
-          }
+    return Builder(builder: (context) {
+      widget.handleNavigation(widget.presenter.navigateToStream, clear: true);
 
-          return const CircularLoading();
-        },
-      ),
-      floatingActionButton: StreamBuilder(
-        stream: widget.presenter.categoriesStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return FloatingActionButton(
-              key: _fabKey,
-              onPressed: () => {
-                widget.presenter
-                    .saveCategory(snapshot.data!.first)
-                    .then((_) => Navigator.pushNamed(context, '/create_item')),
-              },
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            );
-          }
+      return Scaffold(
+        body: StreamBuilder(
+          stream: widget.presenter.itemsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ItemsList(
+                      items: snapshot.data!,
+                    ),
+                  ],
+                ),
+              );
+            }
 
-          return const CircularLoading();
-        },
-      ),
-    );
+            return const CircularLoading();
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          key: _fabKey,
+          onPressed: widget.presenter.handleAddNewItem,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+      );
+    });
   }
 }
-
-
-      // floatingActionButton:
-      //  FloatingActionButton(
-      //   key: _fabKey,
-      //   onPressed: () => {Navigator.pushNamed(context, '/create_item')},
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
