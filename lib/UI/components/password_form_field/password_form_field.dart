@@ -33,6 +33,8 @@ class _StyledPasswordFormFieldState extends State<StyledPasswordFormField> {
   Widget build(BuildContext context) {
     return StyledTextFormField(
       controller: widget.controller,
+      label: widget.label,
+      obscureText: _obscureText,
       suffixIcon: IconButton(
               icon: Icon(
                 _obscureText ? Icons.visibility_off : Icons.visibility,

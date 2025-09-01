@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'bottom_bar/animated_bottom_bar.dart';
-import 'bottom_bar/bottom_bar_item.dart';
+import 'animated_bottom_bar.dart';
+import 'bottom_bar_item.dart';
 
 Widget text(String text) {
   return Text(text, style: const TextStyle(fontSize: 12));

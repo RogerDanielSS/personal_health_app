@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class StyledTextFormField extends StatefulWidget {
   const StyledTextFormField({
@@ -6,9 +7,11 @@ class StyledTextFormField extends StatefulWidget {
     required this.controller,
     this.enableObscureText = false,
     this.readOnly = false,
+    this.obscureText = false,
     this.label = '',
     this.suffixIcon,
     this.onTap,
+    this.inputFormatters,
     required this.keyboardType,
     required this.validator,
   });
@@ -16,10 +19,12 @@ class StyledTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final bool enableObscureText;
   final bool readOnly;
+  final bool obscureText;
   final String label;
   final Widget? suffixIcon;
   final TextInputType keyboardType;
   final FormFieldValidator<String> validator;
+  final List<TextInputFormatter>? inputFormatters;
   final void Function()? onTap;
 
   @override
@@ -27,21 +32,14 @@ class StyledTextFormField extends StatefulWidget {
 }
 
 class _StyledTextFormFieldState extends State<StyledTextFormField> {
-  bool _obscureText = true;
-
-  void _togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      obscureText: widget.enableObscureText && _obscureText,
+      obscureText:  widget.obscureText,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
+      inputFormatters: widget.inputFormatters,
       decoration: InputDecoration(
         suffixIcon: widget.suffixIcon,
         labelText: widget.label,

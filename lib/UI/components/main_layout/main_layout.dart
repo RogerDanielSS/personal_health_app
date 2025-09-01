@@ -60,25 +60,25 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(_currentAccount?.name ?? '')),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        currentIndex: 0, // Update this dynamically based on route
-        onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/home');
-          if (index == 1) Navigator.pushNamed(context, '/profile');
-        },
-      ),
-      body: Builder(builder: (context) {
-        widget.handleNavigation(widget.presenter.navigateToStream, clear: true);
+    return Builder(builder: (context) {
+      widget.handleNavigation(widget.presenter.navigateToStream, clear: true);
 
-        return Container(
+      return Scaffold(
+        appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(_currentAccount?.name ?? '')),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          ],
+          currentIndex: 0, // Update this dynamically based on route
+          onTap: (index) {
+            if (index == 0) Navigator.pushNamed(context, '/item');
+            if (index == 1) Navigator.pushNamed(context, '/profile');
+          },
+        ),
+        body: Container(
           decoration: BoxDecoration(
             color: Colors.grey.shade50,
             image: DecorationImage(
@@ -90,8 +90,8 @@ class _MainLayoutState extends State<MainLayout> {
           alignment: Alignment.center,
           child: Container(
               constraints: BoxConstraints(maxWidth: 900), child: widget.child),
-        );
-      }), // This renders the current page (e.g., HomePage)
-    );
+        ),
+      );
+    });
   }
 }

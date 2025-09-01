@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/UI/components/styled_text_form_field.dart';
+import 'package:personal_health_app/UI/components/password_form_field/password_form_field.dart';
+import 'package:personal_health_app/UI/components/styled_text_form_field/styled_text_form_field.dart';
+// import 'package:personal_health_app/UI/components/styled_text_form_field.dart';
 import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
 
 import './../../mixins/navigation_manager.dart';
@@ -57,11 +59,9 @@ class LoginPage extends StatelessWidget with NavigationManager {
                           validator: presenter.validateEmail,
                         ),
                         SizedBox(height: 16),
-                        StyledTextFormField(
+                        StyledPasswordFormField(
                           controller: _passwordController,
                           label: 'Senha',
-                          enableObscureText: true,
-                          keyboardType: TextInputType.none,
                           validator: presenter.validatePassword,
                         ),
                         SizedBox(height: 24),
