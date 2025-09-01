@@ -1,4 +1,5 @@
 export 'bottom_bar/bottom_bar.dart';
+export 'category_card/category_card.dart';
 export 'datepicker/datepicker.dart';
 export 'fields/fields.dart';
 export 'items_cards_list/items_list.dart';

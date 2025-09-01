@@ -47,12 +47,14 @@ class GetxSelectCategoryPagePresenter extends GetxController
   }
 
   @override
-  Future<void> saveCategory(CategoryEntity category) async {
+  Future<void> handleSelectCategory(CategoryEntity category) async {
     try {
       mainError = null;
       _categoriesError.value = '';
 
       await saveCurrentCategory.save(category);
+
+      navigateTo = '/items/select_category/create_item';
 
     } on Error {
       mainError = UIError.unexpected;

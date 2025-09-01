@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
               fit: BoxFit.cover,
             ),
           ),
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           alignment: Alignment.center,
           child: Column(
             spacing: 40,
