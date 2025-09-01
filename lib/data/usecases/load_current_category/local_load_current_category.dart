@@ -22,6 +22,7 @@ class LocalLoadCurrentCategory implements LoadCurrentCategory {
       return CategoryEntity(
         id: currentCategory['id'],
         name: currentCategory['name'],
+        color: currentCategory['color'],
         dynamicFields: currentCategory['dynamicFields']
       );
     } catch (error) {
