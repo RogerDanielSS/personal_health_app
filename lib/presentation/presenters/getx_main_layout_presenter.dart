@@ -11,7 +11,6 @@ class GetxMainLayoutPresenter extends GetxController
 
   GetxMainLayoutPresenter({required this.deleteCurrentAccount});
 
-  @override
   Future<void> logout() async {
     try {
       await deleteCurrentAccount.delete();

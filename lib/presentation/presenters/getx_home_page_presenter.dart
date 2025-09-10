@@ -37,10 +37,7 @@ class GetxHomePagePresenter extends GetxController
       final account = await loadCurrentAccount.load();
 
       final items = await loadItems.load(account.id);
-      _items.value = items
-          .map((item) =>
-              ItemEntity(id: item.id, categoryId: item.categoryId, title: item.title, fields: item.fields))
-          .toList();
+      _items.value = items.toList();
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {
         isSessionExpired = true;
