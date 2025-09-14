@@ -5,11 +5,13 @@ import '../protocols/http/http_error.dart';
 class RemoteCategoryModel {
   final int id;
   final String name;
+  final String color;
   final List<DynamicFieldEntity>? dynamicFields;
 
   RemoteCategoryModel({
     required this.id,
     required this.name,
+    required this.color,
     required this.dynamicFields,
   });
 
@@ -21,6 +23,7 @@ class RemoteCategoryModel {
     return RemoteCategoryModel(
       id: json['id'],
       name: json['name'],
+      color: json['color'],
       dynamicFields: json['dynamicFields'] != null
           ? (json['dynamicFields'] as List)
               .map((fieldJson) => DynamicFieldEntity.fromJson(fieldJson))
@@ -32,6 +35,7 @@ class RemoteCategoryModel {
   CategoryEntity toEntity() => CategoryEntity(
         id: id,
         name: name,
+        color: color,
         dynamicFields: dynamicFields,
       );
 }

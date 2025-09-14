@@ -3,11 +3,13 @@ import './dynamic_field.dart';
 class CategoryEntity {
   final int id;
   final String name;
+  final String color;
   final List<DynamicFieldEntity>? dynamicFields;
 
   const CategoryEntity({
     required this.id,
     required this.name,
+    required this.color,
     required this.dynamicFields,
   });
 
@@ -17,6 +19,7 @@ class CategoryEntity {
     return CategoryEntity(
       id: json['id'],
       name: json['name'],
+      color: json['color'],
       dynamicFields: json['dynamicFields'] != null
           ? (json['dynamicFields'] as List)
               .map((fieldJson) => DynamicFieldEntity.fromJson(fieldJson))
@@ -28,6 +31,7 @@ class CategoryEntity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'color': color,
         'dynamicFields': dynamicFields,
       };
 }

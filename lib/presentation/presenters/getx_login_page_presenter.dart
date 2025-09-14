@@ -30,7 +30,7 @@ class GetxLoginPagePresenter extends GetxController
 
       await saveCurrentAccount.save(account);
 
-      navigateTo = '/home';
+      navigateTo = '/items';
     } catch (e) {
       // Handle any errors that occur during the login process
       // ScaffoldMessenger.of(context).showSnackBar(

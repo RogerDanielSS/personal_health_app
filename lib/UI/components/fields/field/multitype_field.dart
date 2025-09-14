@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:personal_health_app/UI/components/styled_text_form_field/styled_text_form_field.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
-import 'package:personal_health_app/UI/components/datepicker%20/datepicker.dart';
-import 'package:personal_health_app/UI/components/styled_text_form_field.dart';
+import 'package:personal_health_app/UI/components/datepicker/datepicker.dart';
 
 class MultiTypeField extends StatelessWidget {
   final DynamicFieldEntity dynamicField;

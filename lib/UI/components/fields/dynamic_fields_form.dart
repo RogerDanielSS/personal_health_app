@@ -54,11 +54,11 @@ class _DynamicFieldsFormState extends State<DynamicFieldsForm> {
   }
 
   // Optional: Method to clear all fields
-  void _clearAllFields() {
-    for (var controller in _controllers) {
-      controller.clear();
-    }
-  }
+  // void _clearAllFields() {
+  //   for (var controller in _controllers) {
+  //     controller.clear();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +66,7 @@ class _DynamicFieldsFormState extends State<DynamicFieldsForm> {
       child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
+            spacing: 16,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(

@@ -33,7 +33,7 @@ class ItemWidget extends StatelessWidget {
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color: isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
+          color: isSelected ? item.activeColor : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(
@@ -51,7 +51,7 @@ class ItemWidget extends StatelessWidget {
                   data: IconThemeData(
                       size: iconSize,
                       color: isSelected
-                          ? item.activeColor.withOpacity(1)
+                          ? item.activeColor
                           : item.inactiveColor ?? item.activeColor),
                   child: item.icon,
                 ),
