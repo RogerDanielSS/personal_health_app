@@ -21,10 +21,6 @@ class MainLayout extends StatefulWidget with NavigationManager {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  UserEntity? _currentAccount;
-  bool _isLoading = true; // Add loading state
-  String? _errorMessage; // Add error state
-
   @override
   void initState() {
     super.initState();
@@ -34,28 +30,7 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   Future<void> _initializePage() async {
-    await _loadCurrentAccount();
-  }
-
-  Future<void> _loadCurrentAccount() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
-
-      final account = await widget.loadCurrentAccount.load();
-
-      setState(() {
-        _currentAccount = account;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Failed to load account';
-      });
-    }
+    widget.presenter.loadCurrentAccountData();
   }
 
   @override
@@ -65,8 +40,25 @@ class _MainLayoutState extends State<MainLayout> {
 
       return Scaffold(
         appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(_currentAccount?.name ?? '')),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: StreamBuilder<UserEntity?>(
+            stream: widget.presenter.currentAccountStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data?.name ?? '');
+              } else {
+                return Text('');
+              }
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: widget.presenter.logout,
+            ),
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
