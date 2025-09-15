@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/UI/components/fields/dynamic_fields_form.dart';
+import 'package:personal_health_app/UI/components/file_picker/file_picker.dart';
 import 'package:personal_health_app/UI/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/UI/pages/create_item/create_item_page_presenter.dart';
 
@@ -49,6 +50,7 @@ class _CreateItemPageState extends State<CreateItemPage> {
                           ''), // Replace with your desired color
                     ),
                   ),
+                  FilePickerExample(),
                   DynamicFieldsForm(
                     dynamicFields: snapshot.data?.dynamicFields,
                     onSubmit: (Map<String, String> fields) {
