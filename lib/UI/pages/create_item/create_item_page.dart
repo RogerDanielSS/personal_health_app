@@ -50,7 +50,14 @@ class _CreateItemPageState extends State<CreateItemPage> {
                           ''), // Replace with your desired color
                     ),
                   ),
-                  FilePickerExample(),
+                  FilePickerExample(
+                    child: Container(
+                      color: Colors.white,
+                      width: 100,
+                      height: 100,
+                      child: Icon(Icons.image),
+                    ),
+                  ),
                   DynamicFieldsForm(
                     dynamicFields: snapshot.data?.dynamicFields,
                     onSubmit: (Map<String, String> fields) {

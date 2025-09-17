@@ -3,7 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 
 class FilePickerExample extends StatefulWidget {
-  const FilePickerExample({super.key});
+  final Widget child;
+  const FilePickerExample({super.key, required this.child});
 
   @override
   State<FilePickerExample> createState() => _FilePickerExampleState();
@@ -45,9 +46,10 @@ class _FilePickerExampleState extends State<FilePickerExample> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: _pickFile,
-            child: const Text('Pick File'),
+          InkWell(
+            onTap: _pickFile,
+            borderRadius: BorderRadius.circular(10.0),
+            child: widget.child,
           ),
           const SizedBox(height: 20),
           if (_fileName != null) ...[
