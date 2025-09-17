@@ -7,8 +7,6 @@ extension UISuccessExtension on UISuccess {
     switch (this) {
       case UISuccess.emailResent:
         return 'E-mail reenviado com sucesso!';
-      default:
-        return 'Operação realizada com sucesso!';
     }
   }
 }
