@@ -52,10 +52,19 @@ class _CreateItemPageState extends State<CreateItemPage> {
                   ),
                   FilePickerExample(
                     child: Container(
-                      color: Colors.white,
-                      width: 100,
-                      height: 100,
-                      child: Icon(Icons.image),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.width * 0.8,
+                      constraints: BoxConstraints(
+                        maxWidth: 500,
+                      ),
+                      child: Icon(
+                        Icons.image,
+                        size: MediaQuery.of(context).size.width * 0.4,
+                      ),
                     ),
                   ),
                   DynamicFieldsForm(

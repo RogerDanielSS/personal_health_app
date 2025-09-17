@@ -48,7 +48,6 @@ class _FilePickerExampleState extends State<FilePickerExample> {
         children: [
           InkWell(
             onTap: _pickFile,
-            borderRadius: BorderRadius.circular(10.0),
             child: widget.child,
           ),
           const SizedBox(height: 20),
