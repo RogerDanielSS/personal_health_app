@@ -50,23 +50,24 @@ class _CreateItemPageState extends State<CreateItemPage> {
                           ''), // Replace with your desired color
                     ),
                   ),
-                  FilePickerExample(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.8,
-                      constraints: BoxConstraints(
-                        maxWidth: 500,
-                      ),
-                      child: Icon(
-                        Icons.image,
-                        size: MediaQuery.of(context).size.width * 0.4,
+                  if (snapshot.data?.allowAttachments == true)
+                    FilePickerExample(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width * 0.8,
+                        constraints: BoxConstraints(
+                          maxWidth: 500,
+                        ),
+                        child: Icon(
+                          Icons.image,
+                          size: MediaQuery.of(context).size.width * 0.4,
+                        ),
                       ),
                     ),
-                  ),
                   DynamicFieldsForm(
                     dynamicFields: snapshot.data?.dynamicFields,
                     onSubmit: (Map<String, String> fields) {
