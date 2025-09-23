@@ -61,10 +61,19 @@ class _CreateItemPageState extends State<CreateItemPage> {
                         height: MediaQuery.of(context).size.width * 0.8,
                         constraints: BoxConstraints(
                           maxWidth: 500,
+                          maxHeight: 500,
                         ),
-                        child: Icon(
-                          Icons.image,
-                          size: MediaQuery.of(context).size.width * 0.4,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            double iconSize = constraints.maxWidth * 0.4;
+                            double constrainedIconSize =
+                                iconSize.clamp(24.0, 200.0);
+
+                            return Icon(
+                              Icons.image,
+                              size: constrainedIconSize,
+                            );
+                          },
                         ),
                       ),
                     ),
