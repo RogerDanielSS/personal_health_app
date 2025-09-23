@@ -23,6 +23,7 @@ class LocalLoadCurrentCategory implements LoadCurrentCategory {
         id: currentCategory['id'],
         name: currentCategory['name'],
         color: currentCategory['color'],
+        allowAttachments: currentCategory['allowAttachments'],
         dynamicFields: currentCategory['dynamicFields']
       );
     } catch (error) {
