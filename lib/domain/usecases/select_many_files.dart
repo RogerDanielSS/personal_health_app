@@ -3,5 +3,5 @@ import 'package:personal_health_app/domain/entities/local_file.dart';
 
 abstract class SelectFiles {
   Future<List<LocalFileEntity>> select(
-      FileType? type, List<String>? extensions);
+      LocalFileType? type, List<String>? extensions);
 }

@@ -1,14 +1,18 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:personal_health_app/data/protocols/file_selector/file_selector_client.dart';
+import 'package:personal_health_app/data/protocols/file_selector/file_selector_client.dart'
+    hide FileType;
 import 'package:personal_health_app/data/protocols/file_selector/file_error.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
 class FileSelectorAdapter implements FileSelectorClient {
   @override
-  Future<LocalFileEntity> select({String? type, List<String>? extensions, bool preloadBytes = true}) async {
+  Future<LocalFileEntity> select(
+      {LocalFileType? type,
+      List<String>? extensions,
+      bool preloadBytes = true}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false, 
-      type: _mapToFileType(type),
+      allowMultiple: false,
+      type: _mapToFileType(type, extensions),
       withData: preloadBytes,
       allowedExtensions: extensions,
     );
@@ -23,10 +27,13 @@ class FileSelectorAdapter implements FileSelectorClient {
   }
 
   @override
-  Future<List<LocalFileEntity>> selectMany({String? type, List<String>? extensions, bool preloadBytes = true}) async {
+  Future<List<LocalFileEntity>> selectMany(
+      {LocalFileType? type,
+      List<String>? extensions,
+      bool preloadBytes = true}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
-      type: _mapToFileType(type),
+      type: _mapToFileType(type, extensions),
       withData: preloadBytes,
       allowedExtensions: extensions,
     );
@@ -35,27 +42,34 @@ class FileSelectorAdapter implements FileSelectorClient {
 
     List<LocalFileEntity> filesBytes = result.files
         .map((platformFile) => buildLocalFile(platformFile))
-        .whereType<LocalFileEntity>() // Ensures only non-null Uint8List values are kept
+        .whereType<
+            LocalFileEntity>() // Ensures only non-null Uint8List values are kept
         .toList();
 
     return filesBytes;
   }
 
   LocalFileEntity buildLocalFile(PlatformFile file) {
-    return LocalFileEntity(size: file.size, bytes: file.bytes, fileName: file.name, filePath: file.path);
+    return LocalFileEntity(
+        size: file.size,
+        bytes: file.bytes,
+        fileName: file.name,
+        filePath: file.path);
   }
 
-  FileType _mapToFileType(String? type) {
-    switch (type?.toLowerCase()) {
-      case 'image':
+  FileType _mapToFileType(LocalFileType? type, List<String>? extensions) {
+    if (extensions?.isNotEmpty ?? false) return FileType.custom;
+
+    switch (type) {
+      case LocalFileType.image:
         return FileType.image;
-      case 'video':
+      case LocalFileType.video:
         return FileType.video;
-      case 'audio':
+      case LocalFileType.audio:
         return FileType.audio;
-      case 'media':
+      case LocalFileType.document:
         return FileType.media;
-      case 'any':
+      case LocalFileType.any:
       default:
         return FileType.any;
     }

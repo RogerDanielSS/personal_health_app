@@ -9,7 +9,7 @@ class SelectManyFiles implements SelectFiles {
 
   @override
   Future<List<LocalFileEntity>> select(
-      FileType? type, List<String>? extensions) {
+      LocalFileType? type, List<String>? extensions) {
     return fileSelector.selectMany(extensions: extensions, type: type);
   }
 }

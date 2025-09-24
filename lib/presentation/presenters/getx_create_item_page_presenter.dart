@@ -58,7 +58,7 @@ class GetxCreateItemPagePresenter extends GetxController
 
   @override
   Future<void> selectImageFiles() async {
-    _selectedImages.value = await selectFiles.select(FileType.image, ['jpeg', 'png']);
+    _selectedImages.value = await selectFiles.select(LocalFileType.image, ['jpeg', 'png']);
     throw UnimplementedError();
   }
 }

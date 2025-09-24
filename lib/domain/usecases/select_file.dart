@@ -2,5 +2,5 @@ import 'package:personal_health_app/data/protocols/file_selector/file_selector_c
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
 abstract class SelectFile {
-  Future<LocalFileEntity> select(FileType? type, List<String>? extensions);
+  Future<LocalFileEntity> select(LocalFileType? type, List<String>? extensions);
 }
