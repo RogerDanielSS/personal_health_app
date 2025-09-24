@@ -8,7 +8,7 @@ class SelectSingleFile implements SelectFile {
   SelectSingleFile({required this.fileSelector});
 
   @override
-  Future<LocalFileEntity> select() {
-    return fileSelector.select();
+  Future<LocalFileEntity> select(FileType? type, List<String>? extensions) {
+    return fileSelector.select(extensions: extensions, type: type);
   }
 }

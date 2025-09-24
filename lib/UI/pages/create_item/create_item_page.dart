@@ -52,6 +52,7 @@ class _CreateItemPageState extends State<CreateItemPage> {
                   ),
                   if (snapshot.data?.allowAttachments == true)
                     FilePickerExample(
+                      handleSelectFiles: widget.presenter.selectImageFiles,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
