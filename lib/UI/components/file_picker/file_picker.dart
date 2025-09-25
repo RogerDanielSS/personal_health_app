@@ -30,9 +30,8 @@ class _FilePickerExampleState extends State<FilePickerExample> {
             _buildImageCarousel(),
             const SizedBox(height: 16),
             _buildIndicator(),
-            const SizedBox(height: 20),
           ] else ...[
-            _buildFilePickerButton(),
+            _buildNoFileSelected(),
           ],
 
           const SizedBox(height: 20),
@@ -43,63 +42,55 @@ class _FilePickerExampleState extends State<FilePickerExample> {
   }
 
   Widget _buildImageCarousel() {
-    return CarouselSlider.builder(
-      itemCount: widget.files.length,
-      options: CarouselOptions(
-        height: MediaQuery.of(context).size.width * 0.8,
-        aspectRatio: 1.0,
-        viewportFraction: 0.8,
-        enlargeCenterPage: true,
-        enableInfiniteScroll: widget.files.length > 1,
-        // autoPlay: widget.files.length > 1,
-        // autoPlayInterval: const Duration(seconds: 3),
-        onPageChanged: (index, reason) {
-          setState(() {
-            _currentIndex = index;
-          });
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: 500,
+      ),
+      child: CarouselSlider.builder(
+        itemCount: widget.files.length,
+        options: CarouselOptions(
+          height: (MediaQuery.of(context).size.width * 0.8)
+              .clamp(0, 500)
+              .toDouble(),
+          aspectRatio: 1.0,
+          viewportFraction: 0.8,
+          enlargeCenterPage: true,
+          enableInfiniteScroll: widget.files.length > 1,
+          onPageChanged: (index, reason) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
+        itemBuilder: (context, index, realIndex) {
+          final file = widget.files[index];
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: _buildImageWidget(file),
+            ),
+          );
         },
       ),
-      itemBuilder: (context, index, realIndex) {
-        final file = widget.files[index];
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: _buildImageWidget(file),
-          ),
-        );
-      },
     );
   }
 
   Widget _buildImageWidget(LocalFileEntity file) {
     // Priority: bytes > filePath > placeholder
     if (file.bytes != null) {
-      return Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.width * 0.8,
-          constraints: const BoxConstraints(
-            maxWidth: 500,
-            maxHeight: 500,
-          ),
-          child: Image.memory(
-            file.bytes!,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-            errorBuilder: (context, error, stackTrace) {
-              return _buildPlaceholderIcon();
-            },
-          ));
+      return Image.memory(
+        file.bytes!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholderIcon();
+        },
+      );
     } else if (file.filePath != null) {
       return Image.asset(
         file.filePath!, // Use Image.file for actual file paths: FileImage(File(file.filePath!))
@@ -138,26 +129,20 @@ class _FilePickerExampleState extends State<FilePickerExample> {
             shape: BoxShape.circle,
             color: _currentIndex == entry.key
                 ? Colors.blue
-                : Colors.grey.withOpacity(0.4),
+                : Colors.grey,
           ),
         );
       }).toList(),
     );
   }
 
-  Widget _buildFilePickerButton() {
+  Widget _buildNoFileSelected() {
     return InkWell(
       onTap: widget.handleSelectFiles,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.width * 0.8,
