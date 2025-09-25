@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:personal_health_app/UI/components/images_carousel/images_carousel.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
