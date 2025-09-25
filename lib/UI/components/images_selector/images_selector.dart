@@ -3,21 +3,21 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:personal_health_app/UI/components/images_carousel/images_carousel.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
-class FilePickerExample extends StatefulWidget {
+class ImagesSelector extends StatefulWidget {
   final void Function() handleSelectFiles;
   final List<LocalFileEntity> files;
 
-  const FilePickerExample({
+  const ImagesSelector({
     super.key,
     required this.handleSelectFiles,
     required this.files,
   });
 
   @override
-  State<FilePickerExample> createState() => _FilePickerExampleState();
+  State<ImagesSelector> createState() => _ImagesSelectorState();
 }
 
-class _FilePickerExampleState extends State<FilePickerExample> {
+class _ImagesSelectorState extends State<ImagesSelector> {
   @override
   Widget build(BuildContext context) {
     return Center(
