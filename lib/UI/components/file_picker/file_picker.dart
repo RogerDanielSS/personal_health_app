@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:personal_health_app/UI/components/images_carousel/images_carousel.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
 class FilePickerExample extends StatefulWidget {
@@ -17,8 +18,6 @@ class FilePickerExample extends StatefulWidget {
 }
 
 class _FilePickerExampleState extends State<FilePickerExample> {
-  int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -27,9 +26,7 @@ class _FilePickerExampleState extends State<FilePickerExample> {
         children: [
           // Show carousel if there are files, otherwise show the file picker button
           if (widget.files.isNotEmpty) ...[
-            _buildImageCarousel(),
-            const SizedBox(height: 16),
-            _buildIndicator(),
+            ImagesCarousel(files: widget.files)
           ] else ...[
             _buildNoFileSelected(),
           ],
@@ -38,101 +35,6 @@ class _FilePickerExampleState extends State<FilePickerExample> {
           _buildSelectFilesButton(),
         ],
       ),
-    );
-  }
-
-  Widget _buildImageCarousel() {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: 500,
-      ),
-      child: CarouselSlider.builder(
-        itemCount: widget.files.length,
-        options: CarouselOptions(
-          height: (MediaQuery.of(context).size.width * 0.8)
-              .clamp(0, 500)
-              .toDouble(),
-          aspectRatio: 1.0,
-          viewportFraction: 0.8,
-          enlargeCenterPage: true,
-          enableInfiniteScroll: widget.files.length > 1,
-          onPageChanged: (index, reason) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ),
-        itemBuilder: (context, index, realIndex) {
-          final file = widget.files[index];
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: _buildImageWidget(file),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildImageWidget(LocalFileEntity file) {
-    // Priority: bytes > filePath > placeholder
-    if (file.bytes != null) {
-      return Image.memory(
-        file.bytes!,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-        errorBuilder: (context, error, stackTrace) {
-          return _buildPlaceholderIcon();
-        },
-      );
-    } else if (file.filePath != null) {
-      return Image.asset(
-        file.filePath!, // Use Image.file for actual file paths: FileImage(File(file.filePath!))
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-        errorBuilder: (context, error, stackTrace) {
-          return _buildPlaceholderIcon();
-        },
-      );
-    } else {
-      return _buildPlaceholderIcon();
-    }
-  }
-
-  Widget _buildPlaceholderIcon() {
-    return Container(
-      color: Colors.grey[200],
-      child: const Icon(
-        Icons.image,
-        size: 60,
-        color: Colors.grey,
-      ),
-    );
-  }
-
-  Widget _buildIndicator() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: widget.files.asMap().entries.map((entry) {
-        return Container(
-          width: 8.0,
-          height: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _currentIndex == entry.key
-                ? Colors.blue
-                : Colors.grey,
-          ),
-        );
-      }).toList(),
     );
   }
 
