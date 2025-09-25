@@ -35,57 +35,41 @@ class _CreateItemPageState extends State<CreateItemPage> {
         stream: widget.presenter.currentCategoryStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Container(
-              color: widget.hexToColor(snapshot.data?.color ?? ''),
-              height: double.maxFinite,
-              child: Column(
-                spacing: 8,
-                children: [
-                  Text(
-                    snapshot.data?.name ?? '',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: widget.getContrastColor(snapshot.data?.color ??
-                          ''), // Replace with your desired color
-                    ),
-                  ),
-                  if (snapshot.data?.allowAttachments == true)
-                    FilePickerExample(
-                      handleSelectFiles: widget.presenter.selectImageFiles,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.8,
-                        constraints: BoxConstraints(
-                          maxWidth: 500,
-                          maxHeight: 500,
-                        ),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            double iconSize = constraints.maxWidth * 0.4;
-                            double constrainedIconSize =
-                                iconSize.clamp(24.0, 200.0);
-
-                            return Icon(
-                              Icons.image,
-                              size: constrainedIconSize,
-                            );
-                          },
-                        ),
+            return SingleChildScrollView(
+              child: Container(
+                color: widget.hexToColor(snapshot.data?.color ?? ''),
+                child: Column(
+                  spacing: 8,
+                  children: [
+                    Text(
+                      snapshot.data?.name ?? '',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: widget.getContrastColor(snapshot.data?.color ??
+                            ''), // Replace with your desired color
                       ),
                     ),
-                  DynamicFieldsForm(
-                    dynamicFields: snapshot.data?.dynamicFields,
-                    onSubmit: (Map<String, String> fields) {
-                      widget.presenter
-                          .createItemData(snapshot.data!.id, fields);
-                    },
-                  )
-                ],
+                    if (snapshot.data?.allowAttachments == true)
+                      StreamBuilder(
+                        stream: widget.presenter.selectedImagesStream,
+                        builder: (context, snapshot) {
+                          return FilePickerExample(
+                            handleSelectFiles:
+                                widget.presenter.selectImageFiles,
+                            files: snapshot.data ?? [],
+                          );
+                        },
+                      ),
+                    DynamicFieldsForm(
+                      dynamicFields: snapshot.data?.dynamicFields,
+                      onSubmit: (Map<String, String> fields) {
+                        widget.presenter
+                            .createItemData(snapshot.data!.id, fields);
+                      },
+                    )
+                  ],
+                ),
               ),
             );
           }

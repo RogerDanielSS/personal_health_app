@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:personal_health_app/data/protocols/file_selector/file_selector_client.dart'
-    hide FileType;
+import 'package:personal_health_app/data/protocols/file_selector/file_selector_client.dart';
 import 'package:personal_health_app/data/protocols/file_selector/file_error.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
 
