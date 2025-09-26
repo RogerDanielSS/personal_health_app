@@ -50,10 +50,7 @@ class FileSelectorAdapter implements FileSelectorClient {
 
   LocalFileEntity buildLocalFile(PlatformFile file) {
     return LocalFileEntity(
-        size: file.size,
-        bytes: file.bytes,
-        fileName: file.name,
-        filePath: file.path);
+        size: file.size, bytes: file.bytes, name: file.name, path: file.path);
   }
 
   FileType _mapToFileType(LocalFileType? type, List<String>? extensions) {

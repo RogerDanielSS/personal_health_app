@@ -87,9 +87,9 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
           return _buildPlaceholderIcon();
         },
       );
-    } else if (file.filePath != null) {
+    } else if (file.path != null) {
       return Image.asset(
-        file.filePath!,
+        file.path!,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
@@ -214,9 +214,9 @@ class _FullScreenCarouselState extends State<FullScreenCarousel> {
           return _buildFullScreenPlaceholder();
         },
       );
-    } else if (file.filePath != null) {
+    } else if (file.path != null) {
       return Image.asset(
-        file.filePath!,
+        file.path!,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
           return _buildFullScreenPlaceholder();
