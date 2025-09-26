@@ -7,3 +7,4 @@ export 'loadings/loadings.dart';
 export 'main_layout/main_layout.dart';
 export 'password_form_field/password_form_field.dart';
 export 'styled_text_form_field/styled_text_form_field.dart';
+export 'notifiers/notifiers.dart';
