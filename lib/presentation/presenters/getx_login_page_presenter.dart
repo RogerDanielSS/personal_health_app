@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
+import 'package:personal_health_app/domain/helpers/domain_error.dart';
 import 'package:personal_health_app/presentation/helpers/errors/ui_error.dart';
 import 'package:personal_health_app/presentation/mixins/validation_manager.dart';
 
@@ -32,8 +33,13 @@ class GetxLoginPagePresenter extends GetxController
       await saveCurrentAccount.save(account);
 
       navigateTo = '/items';
-    } catch (e) {
-      mainError = UIError.unexpected;
+    } catch (error) {
+      switch (error) {
+        case DomainError.invalidCredentials:
+          mainError = UIError.invalidCredentials;
+        default:
+          mainError = UIError.unexpected;
+      }
     }
   }
 }
