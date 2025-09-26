@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:personal_health_app/data/protocols/http/http_error.dart';
+import 'package:personal_health_app/domain/entities/local_file.dart';
 
 import '../../data/protocols/http/http_client.dart';
 
@@ -23,7 +24,8 @@ class HttpAdapter implements HttpClient {
     bool? skipSnakeCaseConvertion,
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {}
-      ..addAll({'content-type': 'application/json', 'accept': 'application/json'});
+      ..addAll(
+          {'content-type': 'application/json', 'accept': 'application/json'});
 
     String? jsonBody;
     if (body != null && (requestIsFile == null || requestIsFile == false)) {
@@ -44,10 +46,11 @@ class HttpAdapter implements HttpClient {
     try {
       if (method == 'post') {
         if (requestIsFile == null || requestIsFile == false) {
-          futureResponse = client.post(Uri.parse(url), headers: defaultHeaders, body: jsonBody);
+          futureResponse = client.post(Uri.parse(url),
+              headers: defaultHeaders, body: jsonBody);
         } else {
-          futureFileResponse =
-              _uploadFileRequest(url: url, headers: defaultHeaders, body: body!, method: method);
+          futureFileResponse = _uploadFileRequest(
+              url: url, headers: defaultHeaders, body: body!, method: method);
         }
       } else if (method == 'get') {
         final Uri uri;
@@ -60,10 +63,11 @@ class HttpAdapter implements HttpClient {
         futureResponse = client.get(uri, headers: defaultHeaders);
       } else if (method == 'put') {
         if (requestIsFile == null || requestIsFile == false) {
-          futureResponse = client.put(Uri.parse(url), headers: defaultHeaders, body: jsonBody);
+          futureResponse = client.put(Uri.parse(url),
+              headers: defaultHeaders, body: jsonBody);
         } else {
-          futureFileResponse =
-              _uploadFileRequest(url: url, headers: defaultHeaders, body: body!, method: method);
+          futureFileResponse = _uploadFileRequest(
+              url: url, headers: defaultHeaders, body: body!, method: method);
         }
       } else if (method == 'delete') {
         futureResponse = client.delete(Uri.parse(url), headers: defaultHeaders);
@@ -72,7 +76,8 @@ class HttpAdapter implements HttpClient {
       if (futureResponse != null) {
         response = await futureResponse.timeout(const Duration(seconds: 180));
       } else if (futureFileResponse != null) {
-        fileResponse = await futureFileResponse.timeout(const Duration(seconds: 180));
+        fileResponse =
+            await futureFileResponse.timeout(const Duration(seconds: 180));
       }
     } catch (error) {
       throw HttpError.serverError;
@@ -80,7 +85,8 @@ class HttpAdapter implements HttpClient {
 
     if (fileResponse != null) {
       String responseBody = await fileResponse.stream.bytesToString();
-      return _handleResponse(fileResponse, requestIsFile, responseIsFile, responseBody);
+      return _handleResponse(
+          fileResponse, requestIsFile, responseIsFile, responseBody);
     }
 
     return _handleResponse(response, requestIsFile, responseIsFile, null);
@@ -88,38 +94,98 @@ class HttpAdapter implements HttpClient {
 
   Future<StreamedResponse> _uploadFileRequest({
     required String url,
-    required Map headers,
+    required Map<String, String> headers,
     required Map<String, dynamic> body,
     required String method,
   }) async {
-    var uri = Uri.parse(url);
+    final uri = Uri.parse(url);
+    final request = MultipartRequest(method, uri);
 
-    // create multipart request
-    var request = MultipartRequest(method, uri);
+    // Set headers
+    request.headers.addAll(headers);
 
-    for (final entry in headers.entries) {
-      request.headers[entry.key] = entry.value;
+    // Recursively process the body and add to request
+    _processBodyPart(request, body, parentKey: null);
+
+    return request.send();
+  }
+
+  void _processBodyPart(
+    MultipartRequest request,
+    dynamic value, {
+    String? parentKey,
+  }) {
+    if (value == null) return;
+
+    if (value is LocalFileEntity) {
+      // Handle file entity
+      _addFileToRequest(request, value, parentKey!);
+    } else if (value is Map<String, dynamic>) {
+      // Recursively process map entries
+      for (final entry in value.entries) {
+        final newKey =
+            parentKey != null ? '$parentKey[${entry.key}]' : entry.key;
+        _processBodyPart(request, entry.value, parentKey: newKey);
+      }
+    } else if (value is List<dynamic>) {
+      // Recursively process list items
+      _processList(request, value, parentKey: parentKey);
+    } else {
+      // Handle simple values (string, number, boolean, etc.)
+      _addFieldToRequest(request, value, parentKey!);
     }
+  }
 
-    late Future<MultipartFile> multipartFile;
+  void _processList(
+    MultipartRequest request,
+    List<dynamic> list, {
+    String? parentKey,
+  }) {
+    if (list.isEmpty) return;
 
-    // multipart that takes file
-    for (final entry in body.entries) {
-      if (entry.value is Map) {
-        for (final entryLvl2 in entry.value.entries) {
-          multipartFile =
-              MultipartFile.fromPath('${entry.key}[${entryLvl2.key}]', entryLvl2.value.path);
-        }
-      } else {
-        multipartFile = MultipartFile.fromPath(entry.key, entry.value.path);
+    // Special handling for file arrays - use empty brackets
+    if (list.isNotEmpty && list.every((item) => item is LocalFileEntity)) {
+      for (final item in list) {
+        // Use empty brackets for file arrays (Rails convention)
+        final newKey = parentKey != null ? '$parentKey[]' : '[]';
+        _addFileToRequest(request, item as LocalFileEntity, newKey);
+      }
+    } else if (list.isNotEmpty && list.every((item) => item is Map)) {
+      // Handle list of maps with indices
+      for (int i = 0; i < list.length; i++) {
+        final newKey = parentKey != null ? '$parentKey[$i]' : i.toString();
+        _processBodyPart(request, list[i], parentKey: newKey);
+      }
+    } else {
+      // Handle mixed or simple value lists with indices
+      for (int i = 0; i < list.length; i++) {
+        final newKey = parentKey != null ? '$parentKey[$i]' : i.toString();
+        _processBodyPart(request, list[i], parentKey: newKey);
       }
     }
+  }
 
-    // add file to multipart
-    request.files.add(await multipartFile);
+  void _addFileToRequest(
+    MultipartRequest request,
+    LocalFileEntity file,
+    String fieldName,
+  ) {
+    final multipartFile = MultipartFile.fromBytes(
+      fieldName,
+      file.bytes!,
+      filename: file.name,
+    );
+    request.files.add(multipartFile);
+  }
 
-    // send
-    return request.send();
+  void _addFieldToRequest(
+    MultipartRequest request,
+    dynamic value,
+    String fieldName,
+  ) {
+    // Convert value to string representation
+    final stringValue = value.toString();
+    request.fields[fieldName] = stringValue;
   }
 
   dynamic _handleResponse(
@@ -146,7 +212,8 @@ class HttpAdapter implements HttpClient {
           return null;
         }
 
-        final camelCasedBody = deepKeyTransform(jsonDecode(response.body), snakeToCamel);
+        final camelCasedBody =
+            deepKeyTransform(jsonDecode(response.body), snakeToCamel);
         return {'headers': response.headers, 'body': camelCasedBody};
       case 204:
         return null;
@@ -158,6 +225,8 @@ class HttpAdapter implements HttpClient {
         throw HttpError.forbidden;
       case 404:
         throw HttpError.notFound;
+      case 422:
+        throw HttpError.unprocessableEntitty;
       default:
         throw HttpError.serverError;
     }

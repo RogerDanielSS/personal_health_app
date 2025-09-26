@@ -4,9 +4,8 @@ import 'package:personal_health_app/UI/components/styled_text_form_field/styled_
 // import 'package:personal_health_app/UI/components/styled_text_form_field.dart';
 import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
 
-import './../../mixins/navigation_manager.dart';
-
-class LoginPage extends StatelessWidget with NavigationManager {
+import '../../mixins/mixins.dart';
+class LoginPage extends StatelessWidget with NavigationManager, UIErrorManager {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -24,6 +23,7 @@ class LoginPage extends StatelessWidget with NavigationManager {
   Widget build(BuildContext context) {
     return Scaffold(body: Builder(builder: (context) {
       handleNavigation(presenter.navigateToStream);
+      handleMainError(context, presenter.mainErrorStream);
 
       return Container(
           decoration: BoxDecoration(
