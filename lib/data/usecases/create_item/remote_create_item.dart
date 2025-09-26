@@ -15,14 +15,21 @@ class RemoteCreateItem implements CreateItem {
   @override
   Future<ItemEntity> create(ItemEntity item) async {
     final body = {
+      "item": {
         'title': item.title,
         'category_id': item.categoryId,
         'fields': item.fields,
-      };
+        'images': item.images
+      }
+    };
 
     try {
-      final httpResponse =
-          await httpClient.request(url: url, method: 'post', body: body, skipSnakeCaseConvertion: true);
+      final httpResponse = await httpClient.request(
+          url: url,
+          method: 'post',
+          requestIsFile: true,
+          body: body,
+          skipSnakeCaseConvertion: true);
       final responseBody = httpResponse['body'];
 
       final entityList = responseBody

@@ -49,7 +49,7 @@ class GetxCreateItemPagePresenter extends GetxController
       int categoryId, Map<String, String> fields) async {
     try {
       final item =
-          ItemEntity(title: 'title', categoryId: categoryId, fields: fields);
+          ItemEntity(categoryId: categoryId, fields: fields, images: _selectedImages.value);
       await createItem.create(item);
     } on Error {
       mainError = UIError.unexpected;
