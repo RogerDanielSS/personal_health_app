@@ -48,20 +48,27 @@ class GetxCreateItemPagePresenter extends GetxController
   Future<void> createItemData(
       int categoryId, Map<String, String> fields) async {
     try {
-      final item =
-          ItemEntity(categoryId: categoryId, fields: fields, images: _selectedImages.value);
+      final item = ItemEntity(
+          categoryId: categoryId,
+          fields: fields,
+          images: _selectedImages.value);
       await createItem.create(item);
-    } on Error {
+
+      navigateTo = '/items';
+    } catch (error) {
       mainError = UIError.unexpected;
     }
   }
 
   @override
   Future<void> selectImageFiles() async {
-    var selectedImages =
-        await selectFiles.select(LocalFileType.image, ['jpeg', 'png']);
-
-    _selectedImages.value =
-        (_selectedImages.value ?? []) + selectedImages;
+    List<LocalFileEntity> selectedImages = [];
+    try {
+      selectedImages =
+          await selectFiles.select(LocalFileType.image, ['jpeg', 'png']);
+    } on Error {
+      return;
+    }
+    _selectedImages.value = (_selectedImages.value ?? []) + selectedImages;
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:personal_health_app/UI/mixins/navigation_manager.dart';
+import 'package:personal_health_app/UI/mixins/mixins.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/domain/usecases/load_current_account.dart';
 import 'package:personal_health_app/UI/components/items_cards_list/items_list.dart';
 import 'package:personal_health_app/UI/components/loadings/circular_loading.dart';
 import 'package:personal_health_app/UI/pages/home/home_page_presenter.dart';
 
-class HomePage extends StatefulWidget with NavigationManager {
+class HomePage extends StatefulWidget with NavigationManager, UIErrorManager {
   final HomePagePresenter presenter;
   final LoadCurrentAccount loadCurrentAccount;
   // final LoadUserItems loadUserItems;
@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       widget.handleNavigation(widget.presenter.navigateToStream);
+      widget.handleMainError(context, widget.presenter.mainErrorStream);
 
       return Scaffold(
         body: StreamBuilder(

@@ -6,7 +6,8 @@ import 'package:personal_health_app/UI/pages/create_item/create_item_page_presen
 
 import '../../mixins/mixins.dart';
 
-class CreateItemPage extends StatefulWidget with ColorHelper {
+class CreateItemPage extends StatefulWidget
+    with ColorHelper, NavigationManager, UIErrorManager {
   final CreateItemPagePresenter presenter;
 
   const CreateItemPage({super.key, required this.presenter});
@@ -30,53 +31,59 @@ class _CreateItemPageState extends State<CreateItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: widget.presenter.currentCategoryStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-                color: widget.hexToColor(snapshot.data?.color ?? ''),
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    spacing: 8,
-                    children: [
-                      Text(
-                        snapshot.data?.name ?? '',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          color: widget.getContrastColor(snapshot.data?.color ??
-                              ''), // Replace with your desired color
-                        ),
-                      ),
-                      if (snapshot.data?.allowAttachments == true)
-                        StreamBuilder(
-                          stream: widget.presenter.selectedImagesStream,
-                          builder: (context, snapshot) {
-                            return ImagesSelector(
-                              handleSelectFiles:
-                                  widget.presenter.selectImageFiles,
-                              files: snapshot.data ?? [],
-                            );
-                          },
-                        ),
-                      DynamicFieldsForm(
-                        dynamicFields: snapshot.data?.dynamicFields,
-                        onSubmit: (Map<String, String> fields) {
-                          widget.presenter
-                              .createItemData(snapshot.data!.id, fields);
-                        },
-                      )
-                    ],
-                  ),
-                ));
-          }
+    return Builder(builder: (context) {
+      widget.handleNavigation(widget.presenter.navigateToStream);
+      widget.handleMainError(context, widget.presenter.mainErrorStream);
 
-          return const CircularLoading();
-        },
-      ),
-    );
+      return Scaffold(
+        body: StreamBuilder(
+          stream: widget.presenter.currentCategoryStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                  color: widget.hexToColor(snapshot.data?.color ?? ''),
+                  height: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      spacing: 8,
+                      children: [
+                        Text(
+                          snapshot.data?.name ?? '',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color: widget.getContrastColor(
+                                snapshot.data?.color ??
+                                    ''), // Replace with your desired color
+                          ),
+                        ),
+                        if (snapshot.data?.allowAttachments == true)
+                          StreamBuilder(
+                            stream: widget.presenter.selectedImagesStream,
+                            builder: (context, snapshot) {
+                              return ImagesSelector(
+                                handleSelectFiles:
+                                    widget.presenter.selectImageFiles,
+                                files: snapshot.data ?? [],
+                              );
+                            },
+                          ),
+                        DynamicFieldsForm(
+                          dynamicFields: snapshot.data?.dynamicFields,
+                          onSubmit: (Map<String, String> fields) {
+                            widget.presenter
+                                .createItemData(snapshot.data!.id, fields);
+                          },
+                        )
+                      ],
+                    ),
+                  ));
+            }
+
+            return const CircularLoading();
+          },
+        ),
+      );
+    });
   }
 }

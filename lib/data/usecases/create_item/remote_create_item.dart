@@ -1,9 +1,9 @@
+import 'package:personal_health_app/data/models/remote_item_model.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 
 import '../../../domain/helpers/domain_error.dart';
 import '../../../domain/usecases/usecases.dart';
 
-import '../../models/remote_category_model.dart';
 import '../../protocols/http/http.dart';
 
 class RemoteCreateItem implements CreateItem {
@@ -32,12 +32,7 @@ class RemoteCreateItem implements CreateItem {
           skipSnakeCaseConvertion: true);
       final responseBody = httpResponse['body'];
 
-      final entityList = responseBody
-          .map<CategoryEntity>(
-              (json) => RemoteCategoryModel.fromJson(json).toEntity())
-          .toList();
-
-      return entityList;
+      return RemoteItemModel.fromJson(responseBody).toEntity();
     } on HttpError catch (error) {
       throw error == HttpError.unauthorized
           ? DomainError.accessDenied

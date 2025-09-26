@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:personal_health_app/domain/entities/entities.dart';
 import 'package:personal_health_app/domain/entities/local_file.dart';
+import 'package:personal_health_app/presentation/helpers/errors/ui_error.dart';
 
 abstract class CreateItemPagePresenter implements Listenable {
+  Stream<String?> get navigateToStream;
+  Stream<UIError?> get mainErrorStream;
+
   Stream<CategoryEntity?> get currentCategoryStream;
   Stream<List<LocalFileEntity>?> get selectedImagesStream;
 
