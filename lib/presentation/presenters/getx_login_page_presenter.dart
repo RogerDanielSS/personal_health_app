@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import 'package:personal_health_app/UI/pages/login/login_page_presenter.dart';
+import 'package:personal_health_app/presentation/helpers/errors/ui_error.dart';
 import 'package:personal_health_app/presentation/mixins/validation_manager.dart';
 
 import '../../../domain/usecases/usecases.dart';
@@ -32,10 +33,7 @@ class GetxLoginPagePresenter extends GetxController
 
       navigateTo = '/items';
     } catch (e) {
-      // Handle any errors that occur during the login process
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('An error occurred. Please try again later.')),
-      // );
+      mainError = UIError.unexpected;
     }
   }
 }
