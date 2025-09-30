@@ -5,7 +5,9 @@ mixin NavigationManager {
     Stream<String?> stream) {
     stream.listen((page) {
       if (page != null && page.isNotEmpty) {
-        if (page.split('/').length == 2) {
+        var temp = page.split('/').length;
+
+        if (page.split('/').length == 2 || page =='/') {
           Get.offAllNamed(page);
         } else {
           Get.toNamed(page);
